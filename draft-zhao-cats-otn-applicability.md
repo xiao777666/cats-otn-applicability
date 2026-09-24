@@ -10,19 +10,19 @@ number:
 date:
 consensus: true
 v: 3
-area: Routing
-workgroup: CATS Working Group
+area: "Routing"
+workgroup: "Computing-Aware Traffic Steering"
 keyword:
  - next generation
  - unicorn
  - AI-native
 venue:
-  group: WG
-  type: Working Group
-  mail: WG@example.com
-  arch: https://example.com/WG
-  github: USER/REPO
-  latest: https://example.com/LATEST
+  group: "Computing-Aware Traffic Steering"
+  type: "Working Group"
+  mail: "cats@ietf.org"
+  arch: "https://mailarchive.ietf.org/arch/browse/cats/"
+  github: "xiao777666/cats-otn-applicability"
+  latest: "https://xiao777666.github.io/cats-otn-applicability/draft-zhao-cats-otn-applicability.html"
 
 author:
  -
