@@ -37,10 +37,10 @@ keyword:
  - unicorn
  - AI-native
 venue:
-  group: "CATS Working Group"
+  group: WG
   type: Working Group
-  mail: cats@ietf.org
-  arch: [https://example.com/WG](https://mailarchive.ietf.org/arch/browse/cats/)
+  mail: WG@example.com
+  arch: https://example.com/WG
   github: USER/REPO
   latest: https://example.com/LATEST
 
