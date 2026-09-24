@@ -1933,14 +1933,28 @@ optical cross-connects or timeslot allocations. Additionally, C-SMAs must have m
 <p id="section-7-4">This document is restricted to a single service provider scenario. The centralized architecture of the OTN control plane within a single domain facilitates a closed management
 loop, effectively minimizing the external attack surface. Therefore, security issues specific to multi-provider deployments are considered out of scope.<a href="#section-7-4" class="pilcrow">¶</a></p>
 <p id="section-7-5">CATS-aware OTN edge nodes serve as the ingress points for computing traffic entering the network. In the absence of device access authentication, unauthorized devices could access the network, acting as attack vectors for traffic injection, eavesdropping, or lateral movement.
-Therefore, edge nodes MUST support access control:
-* Identity authentication MUST be performed before a device connects to the network to prevent the access of illegal or rogue devices. Only successfully authenticated devices are permitted to join the network and carry computing traffic.
-* Access MUST be denied for illegal devices, and such access attempt events MUST be recorded in audit logs.<a href="#section-7-5" class="pilcrow">¶</a></p>
-<p id="section-7-6">Network awareness state notifications (e.g., device status, link metrics) and policy notifications (e.g., routing policies, traffic steering rules) directly affect the forwarding paths of computing traffic. An attacker could leverage forged or tampered notification messages to publish false status information or malicious policies, performing malicious traffic steering or traffic hijacking. This may result in computing traffic being redirected to attacker-controlled nodes or discarded.
-Sensitive communications require message origin authentication and message integrity protection:
-* Network awareness state and policy notifications MUST be protected for integrity (e.g., using Message Authentication Codes) to detect any tampering during transmission.
-* The source of the notifications MUST be authenticated to ensure that only authorized entities (e.g., legitimate C-NMAs or C-PSes) can send notifications.
-* The receiver MUST verify the source and message integrity before executing any announced states or policies. If verification fails, a security alarm MUST be triggered, and the notification message MUST be discarded.<a href="#section-7-6" class="pilcrow">¶</a></p>
+Therefore, edge nodes MUST support access control:<a href="#section-7-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7-6.1">
+          <p id="section-7-6.1.1">Identity authentication MUST be performed before a device connects to the network to prevent the access of illegal or rogue devices. Only successfully authenticated devices are permitted to join the network and carry computing traffic.<a href="#section-7-6.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-7-6.2">
+          <p id="section-7-6.2.1">Access MUST be denied for illegal devices, and such access attempt events MUST be recorded in audit logs.<a href="#section-7-6.2.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-7-7">Network awareness state notifications (e.g., device status, link metrics) and policy notifications (e.g., routing policies, traffic steering rules) directly affect the forwarding paths of computing traffic. An attacker could leverage forged or tampered notification messages to publish false status information or malicious policies, performing malicious traffic steering or traffic hijacking. This may result in computing traffic being redirected to attacker-controlled nodes or discarded.
+Sensitive communications require message origin authentication and message integrity protection:<a href="#section-7-7" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7-8.1">
+          <p id="section-7-8.1.1">Network awareness state and policy notifications MUST be protected for integrity (e.g., using Message Authentication Codes) to detect any tampering during transmission.<a href="#section-7-8.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-7-8.2">
+          <p id="section-7-8.2.1">The source of the notifications MUST be authenticated to ensure that only authorized entities (e.g., legitimate C-NMAs or C-PSes) can send notifications.<a href="#section-7-8.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-7-8.3">
+          <p id="section-7-8.3.1">The receiver MUST verify the source and message integrity before executing any announced states or policies. If verification fails, a security alarm MUST be triggered, and the notification message MUST be discarded.<a href="#section-7-8.3.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
 </section>
 </div>
 <div id="sec-privacy">
