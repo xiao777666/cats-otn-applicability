@@ -19,27 +19,27 @@
 # Change the file extension to match the format (.xml for XML, etc...)
 #
 ###
-title: "TODO - Your title"
-abbrev: "TODO - Abbreviation"
+title: "Framework and Applicability of Computation-aware Traffic Steering (CATS) in Optical Transport Networks (OTN)"
+abbrev: "OTN for CATS"
 category: info
 
-docname: draft-todo-yourname-protocol-latest
+docname: draft-zhao-cats-otn-applicability-latest
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
 number:
 date:
 consensus: true
 v: 3
-area: AREA
-workgroup: WG Working Group
+area: Routing
+workgroup: CATS Working Group
 keyword:
  - next generation
  - unicorn
  - AI-native
 venue:
-  group: WG
+  group: CATS Working Group
   type: Working Group
-  mail: WG@example.com
-  arch: https://example.com/WG
+  mail: cats@ietf.org
+  arch: [https://example.com/WG](https://mailarchive.ietf.org/arch/browse/cats/)
   github: USER/REPO
   latest: https://example.com/LATEST
 
