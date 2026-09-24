@@ -1,0 +1,2155 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>Framework and Applicability of Computation-aware Traffic Steering (CATS) in Optical Transport Networks (OTN)</title>
+<meta content="Yang Zhao" name="author">
+<meta content="LiuYan Han" name="author">
+<meta content="Xiao Li" name="author">
+<meta content="Haomian Zheng" name="author">
+<meta content="Daniel King" name="author">
+<meta content="
+       Computation-aware Traffic Steering (CATS) offers a framework for selecting computation service sites based on computation capabilities and load,
+and considering the network capabilities and state on the paths to the sites. 
+       Optical Transport Networks (OTN) provide guaranteed separation of traffic along with reserved hardware resources offering bandwidth and quality
+of service promises. 
+       This document describes how OTN may be used to support a CATS system to achieve the stringent performance targets required by demanding service
+environments. 
+    " name="description">
+<meta content="xml2rfc 3.34.1" name="generator">
+<meta content="compute" name="keyword">
+<meta content="optical" name="keyword">
+<meta content="draft-zhao-cats-otn-applicability-latest" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.34.1
+    Python 3.14.7
+    ConfigArgParse 1.7.7
+    google-i18n-address 3.1.1
+    intervaltree 3.2.1
+    Jinja2 3.1.6
+    lxml 6.1.1
+    natsort 8.4.0
+    platformdirs 4.11.10
+    pycountry 24.6.1
+    PyYAML 6.0.3
+    requests 2.33.1
+    wcwidth 0.8.4
+-->
+<link href="draft-zhao-cats-otn-applicability.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Lora SemiBold'), local('Lora-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: italic;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-greek.woff2') format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Sofia Sans Semi Condensed';
+  font-style: normal;
+  font-weight: 1 1000;
+  src: url('https://martinthomson.github.io/rfc-css/fonts/sofiasanssemicondensed-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: light dark;
+  --background-color: #fff;
+  --text-color: #222;
+  --title-color: #191919;
+  --link-color: #2a6496;
+  --highlight-color: #f9f9f9;
+  --line-color: #eee;
+  --pilcrow-weak: #ddd;
+  --pilcrow-strong: #bbb;
+  --small-font-size: 14.5px;
+  --font-mono: 'Oxygen Mono', monospace;
+  --font-title: "Sofia Sans Semi Condensed", sans-serif;
+  scrollbar-color: #bbb #eee;
+}
+body {
+  max-width: 600px;
+  margin: 75px auto;
+  padding: 0 5px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font: 16px/22px "Lora", serif;
+  scroll-behavior: smooth;
+}
+
+.ears {
+  display: none;
+}
+
+/* headings */
+section {
+  clear: both;
+}
+.section-number {
+  padding-right: 0.5em;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title);
+  font-weight: 680;
+  margin: 0.8em 0 0.3em;
+  font-size-adjust: 0.5;
+  color: var(--title-color);
+}
+h1 {
+  &#title {
+    font-size: 32px;
+    line-height: 40px;
+    clear: both;
+    margin: 1.5em 0 0.2em;
+  }
+  &#rfcnum {
+    margin: 1.5em 0 0.2em;
+    & + h1#title {
+      margin: 0.2em 0;
+    }
+  }
+}
+
+h1, h2, h3 {
+  font-size: 22px;
+  line-height: 27px;
+}
+h4, h5, h6 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+/* general structure */
+.author {
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+#abstract+p {
+  font-size: 18px;
+  line-height: 24px;
+  & code, & samp, & tt {
+    font-size: 16px;
+    line-height: 0;
+  }
+}
+
+p {
+  padding: 0;
+  margin: 0.5em 0;
+  text-align: left;
+}
+div {
+  margin: 0;
+}
+.alignRight {
+  margin: 1em 0;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    margin: 0;
+    float: right;
+    clear: both;
+  }
+  & > *:nth-child(2) {
+    clear: both;
+    display: block;
+    border: none;
+  }
+}
+svg {
+  display: block;
+  /* font-family isn't space-separated, but =~ will have to do */
+  &[font-family~="monospace" i], & [font-family~="monospace" i] {
+    font-family: var(--font-mono);
+  }
+}
+.alignCenter {
+  margin: 1em 0;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+       support flexbox yet.
+    */
+    display: table;
+    margin: 0 auto;
+  }
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 0.5em 2em;
+  & :is(ol, ul) {
+    margin-left: 1em;
+  }
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+  & li {
+    margin-top: 0.5em;
+  }
+}
+:is(ul, ol).compact, .ulCompact, .olCompact {
+  margin: 0 0 0 2em;
+  & li {
+    margin: 0;
+    & :first-child { margin-top: 0; }
+    & :last-child { margin-bottom: 0; }
+  }
+}
+
+/* definition lists */
+dl {
+  clear: left;
+  --indent: 3ch;
+  /* --indent: attr(indent ch); not supported in any browser, but we can dream */
+  &.olPercent {
+    --indent: 5ch;
+    & > dt {
+      min-width: calc(var(--indent) - 2ch);
+      float: none;
+    }
+  }
+
+  dl > dd > & {
+    margin-top: 0.5em;
+    margin-bottom: 0;
+  }
+
+  &:not(.dlNewline) > dt {
+    float: left;
+    margin-right: 2ch;
+    min-width: 8ch;
+  }
+  & > dd {
+    margin-bottom: .8em;
+    margin-left: var(--indent) !important; /* stupid element overrides */
+    min-height: 2ex;
+  }
+}
+:is(dl.compact, .dlCompact) > dd {
+  margin-bottom: 0;
+  & > :is(:first-child, .break:first-child + *) {
+    margin-top: 0;
+  }
+  & > :is(:last-child) {
+    margin-bottom: 0;
+  }
+}
+:is(dd, span).break {
+  display: none;
+}
+
+/* links */
+a {
+  text-decoration: none;
+  &[href] {
+    color: var(--link-color);
+    &:hover { text-decoration: underline; }
+    &.selfRef {
+      color: var(--text-color);
+      &:hover {
+        text-decoration: none;
+        background-color: var(--highlight-color);
+      }
+    }
+  }
+}
+.iref + a[href].internal {
+  color: var(--text-color);
+}
+a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
+  white-space: nowrap;
+}
+
+/* Figures */
+tt, code, pre {
+  background-color: var(--highlight-color);
+  font: 14px/22px var(--font-mono);
+}
+tt, code {
+  /* changing the font for inline elements leads to different ascender
+     and descender heights; as we want to retain baseline alignment,
+     remove leading to avoid altering the final height of lines
+     note: this fails if these blocks take an entire line,
+     a different solution would be great */
+  line-height: 0;
+}
+:is(h1, h2, h3, h4, h5, h6) :is(tt, code) {
+  font-size: 84%;
+}
+pre {
+  border: 1px solid var(--line-color);
+  font-size: 13.5px;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  margin: 5px;
+  padding: 5px;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0.5em 0;
+  padding: 0;
+  & blockquote {
+    margin: 0.8em 0.4em 0.4em;
+  }
+}
+figcaption, caption {
+  font-style: italic;
+  margin: 0.5em 1.5em;
+  text-align: left;
+  caption-side: bottom;
+}
+@media screen {
+  /* Auto-collapse boilerplate. */
+  :is(#status-of-memo, #copyright) {
+    & p {
+      margin: -2px 0;
+      max-height: 0;
+      transition: max-height 2s ease, margin 0.5s ease 0.5s;
+      overflow: hidden;
+    }
+    &:hover p,
+    & h2:target ~ p {
+      margin: 0.5em 0;
+      max-height: 500px;
+      overflow: auto;
+    }
+  }
+  pre, svg {
+    display: inline-block;
+    /* In the horizontal direction, sometimes people make over-sized figures.
+       Scrollbars for those is therefore necessary: auto adds them as necessary..
+       In the vertical direction, the line-height can combine with the font
+       asender/descender height to produce scrollbars: hidden avoids that. */
+    overflow: auto hidden;
+  }
+  pre {
+    max-width: 100%;
+    width: calc(100% - 22px - 1em);
+  }
+  svg {
+    max-width: calc(100% - 22px - 1em);
+  }
+  figure pre {
+    display: block;
+    width: calc(100% - 25px);
+  }
+  :is(pre, svg) + .pilcrow {
+    display: inline-block;
+    vertical-align: text-bottom;
+    padding-bottom: 8px;
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 0 2em;
+  font-style: italic;
+}
+blockquote {
+  margin: 1em 0;
+  border-left: 2px var(--pilcrow-strong) solid;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* tables */
+table {
+  width: auto;
+  max-width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+  &.right { margin-left: auto; }
+  &.center { margin-left: auto; margin-right: auto; }
+  &.left { margin-right: auto; }
+  & .text-left { text-align: left; }
+  & .text-center { text-align: center; }
+  & .text-right { text-align: right; }
+  & caption {
+    margin: 0;
+    padding: 3px 0 3px 1em;
+  }
+  & p { margin: 0; }
+}
+
+thead, tbody {
+  border: 1px solid var(--line-color);
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px 10px;
+}
+th {
+  background-color: var(--line-color);
+}
+:is(tr:nth-child(2n), thead+tbody > tr:nth-child(2n+1)) > td {
+  background-color: var(--background-color);
+}
+:is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
+  background-color: var(--highlight-color);
+}
+
+/* pilcrow */
+a.pilcrow {
+  margin-left: 3px;
+  opacity: 0.2;
+  user-select: none;
+  &[href] {
+    color: var(--pilcrow-weak);
+    &:hover { text-decoration: none; }
+  }
+  @media not print {
+    :hover > &, &:focus {
+      opacity: 1;
+    }
+    &[href]:hover {
+      color: var(--pilcrow-strong);
+      background-color: transparent;
+    }
+  }
+  @media print {
+    display: none;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-color);
+}
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: 600;
+  font-size: var(--small-font-size);
+}
+.role {
+  font-variant: all-small-caps;
+}
+sub, sup {
+  line-height: 1;
+  font-size: 80%;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: var(--small-font-size);
+  line-height: 18px;
+  --identifier-width: 15ch;
+  & dt {
+    width: var(--identifier-width);
+    min-width: var(--identifier-width);
+    clear: left;
+    float: left;
+    text-align: right;
+    margin-right: 1ch;
+  }
+  & dd {
+    margin: 0;
+    margin-left: calc(1em + var(--identifier-width)) !important;
+    min-width: 5em;
+  }
+  & .authors {
+    & .author {
+      display: inline-block;
+      margin-right: 1.5em;
+    }
+    & .org {
+      font-style: italic;
+    }
+  }
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #999;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+  & .prepared {
+    float: right;
+  }
+}
+
+/* table of contents */
+#toc {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+
+  & nav {
+    & ul {
+      margin: 0 0.5em 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    & li {
+      line-height: 1.3em;
+      margin: 2px 0;
+      padding-left: 1.2em;
+      text-indent: -1.2em;
+    }
+  }
+  & a.xref {
+    white-space: normal;
+  }
+}
+
+.references {
+  & > dt {
+    text-align: right;
+    font-weight: bold;
+    min-width: 10ch;
+    margin-right: 1.5ch;
+    &:target::before {
+      content: "⇒";
+      margin: 0 10px 0 -25px;
+    }
+  }
+  & > dd {
+    margin-left: 12ch !important;
+    overflow: visible;
+    & .refInstance {
+      margin-bottom: 0.8em;
+    }
+    & .ascii {
+      margin-bottom: 0.25em;
+    }
+  }
+}
+
+#rfc\.index\.index + ul {
+  margin-left: 0;
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  max-width: 20em;
+  margin: 1em auto 1em 0;
+
+  & .nameRole {
+    font-weight: 700;
+    margin-left: 0;
+  }
+  & .label {
+    margin: 0.5em 0;
+  }
+  & .type {
+    display: none;
+  }
+  & .alternative-contact {
+    margin: 0.5em 0 0.25em 0;
+  }
+  & .non-ascii {
+    margin: 0 0 0 2em;
+  }
+  & div.left {
+    text-align: left;
+  }
+  & div.right {
+    text-align: right;
+  }
+}
+
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+@media (min-width: 500px) {
+  #authors-addresses {
+    & > section {
+      column-count: 2;
+      column-gap: 20px;
+    }
+    & > section > h2 {
+      column-span: all;
+    }
+    /* hack for break-inside: avoid-column */
+    & address {
+      display: inline-block;
+      break-inside: avoid-column;
+    }
+  }
+}
+
+/* Comments */
+.rfcEditorRemove {
+  & p:first-of-type {
+    font-style: italic;
+  }
+}
+.cref {
+  background-color: rgba(249, 232, 105, 0.3);
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+
+@media screen {
+  #toc {
+    & nav {
+      font-family: var(--font-title);
+      font-weight: 360;
+      & > ul { margin-bottom: 2em; }
+      & ul {
+        margin: 0 0 0 4px;
+        & :is(p, li) {
+          margin: 2px 0;
+        }
+      }
+    }
+    & a.toplink {
+      float: right;
+    }
+  }
+}
+@media not screen {
+  #toc a.toplink {
+    display: none;
+  }
+}
+
+
+/* TOC layout for smaller screens */
+@media screen and (max-width: 929px) {
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 1px 0 0 0;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    opacity: 0.6;
+    & h2 {
+      margin: 0;
+      padding: 2px 0 2px 6px;
+      padding-right: 1em;
+      font-size: 18px;
+      line-height: 24px;
+      min-width: 190px;
+      text-align: right;
+      background-color: #444;
+      color: white;
+      cursor: pointer;
+      &::before { /* css hamburger */
+        float: right;
+        position: relative;
+        width: 1em;
+        height: 1px;
+        left: -164px;
+        margin: 8px 0 0 0;
+        background: white none repeat scroll 0 0;
+        box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+        content: "";
+      }
+    }
+    & nav {
+      display: none;
+      background-color: var(--background-color);
+      padding: 0.5em 1em 1em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      height: calc(100vh - 48px);
+      border-left: 1px solid #ddd;
+    }
+    &.active {
+      opacity: 1;
+      & nav { display: block; }
+    }
+    /* Make the collapsed ToC header render white on gray also when it's a link */
+    & h2 a,
+    & h2 a:is(:link, :focus, :hover),
+    & a.toplink,
+    & a.toplink:hover {
+      color: white;
+      background-color: #444;
+      text-decoration: none;
+    }
+    & a.toplink {
+      margin: 2px 0.5em 0;
+    }
+  }
+}
+
+/* TOC layout for wide screens */
+@media screen and (min-width: 930px) {
+  body {
+    padding-right: 360px;
+    padding-right: calc(min(180px + 20%, 500px));
+  }
+  #toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 480px);
+    width: 312px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+    & h2 {
+      margin: 0;
+      padding: 0.25em 1em 1em 0;
+    }
+    & nav {
+      display: block;
+      height: calc(90vh - 84px);
+      bottom: 0;
+      padding: 0.5em 0 2em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+    & a.toplink {
+      margin: 8px 0.5em 0;
+    }
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc {
+    page-break-before: always;
+    border-top: none;
+    padding-top: 0;
+  }
+  #n-introduction {
+    page-break-before: always;
+  }
+  figure, pre, .vcard {
+    page-break-inside: avoid;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  :is(h2, h3, h4, h5, h6)+*, dd {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+}
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+}
+
+/* Dark mode. */
+@media (prefers-color-scheme: dark) {
+:root {
+  --background-color: #121212;
+  --text-color: #f0f0f0;
+  --title-color: #fff;
+  --link-color: #4da4f0;
+  --highlight-color: #282828;
+  --line-color: #444;
+  --pilcrow-weak: #444;
+  --pilcrow-strong: #666;
+  scrollbar-color: #777 #333;
+}
+}
+
+/* SVG Trick: a prefix match works because only black and white are allowed */
+svg {
+  & :is([stroke="black"], [stroke^="#000"]) {
+    stroke: var(--text-color);
+  }
+  & :is([stroke="white"], [stroke^="#fff"]) {
+    stroke: var(--background-color);
+  }
+  & :is([fill="black"], [fill^="#000"], :not([fill])) {
+    fill: var(--text-color);
+  }
+  & :is([fill="white"], [fill^="#fff"]) {
+    fill: var(--background-color);
+  }
+}
+</style>
+
+</head>
+<body class="xml2rfc">
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">OTN for CATS</td>
+<td class="right">September 2026</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Zhao, et al.</td>
+<td class="center">Expires 28 March 2027</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">CATS Working Group</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-zhao-cats-otn-applicability-latest</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2026-09-24" class="published">24 September 2026</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Informational</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2027-03-28">28 March 2027</time></dd>
+<dt class="label-authors">Authors:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">Y. Zhao</div>
+<div class="org">China Mobile</div>
+</div>
+<div class="author">
+      <div class="author-name">L. Han</div>
+<div class="org">China Mobile</div>
+</div>
+<div class="author">
+      <div class="author-name">X. Li</div>
+<div class="org">Huawei</div>
+</div>
+<div class="author">
+      <div class="author-name">H. Zheng</div>
+<div class="org">Huawei</div>
+</div>
+<div class="author">
+      <div class="author-name">D. King</div>
+<div class="org">Old Dog Consulting</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">Framework and Applicability of Computation-aware Traffic Steering (CATS) in Optical Transport Networks (OTN)</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">Computation-aware Traffic Steering (CATS) offers a framework for selecting computation service sites based on computation capabilities and load,
+and considering the network capabilities and state on the paths to the sites.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-2">Optical Transport Networks (OTN) provide guaranteed separation of traffic along with reserved hardware resources offering bandwidth and quality
+of service promises.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+<p id="section-abstract-3">This document describes how OTN may be used to support a CATS system to achieve the stringent performance targets required by demanding service
+environments.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
+</section>
+<section class="note rfcEditorRemove" id="section-note.1">
+      <h2 id="name-about-this-document">
+<a href="#name-about-this-document" class="section-name selfRef">About This Document</a>
+      </h2>
+<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">
+        The latest revision of this draft can be found at <span><a href="https://xiao777666.github.io/cats-otn-applicability/draft-zhao-cats-otn-applicability.html">https://xiao777666.github.io/cats-otn-applicability/draft-zhao-cats-otn-applicability.html</a></span>.
+        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-zhao-cats-otn-applicability/">https://datatracker.ietf.org/doc/draft-zhao-cats-otn-applicability/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+<p id="section-note.1-3">
+        Discussion of this document takes place on the
+        CATS Working Group Working Group mailing list (<span><a href="mailto:cats@ietf.org">mailto:cats@ietf.org</a></span>),
+        which is archived at <span><a href="https://mailarchive.ietf.org/arch/browse/cats/">https://mailarchive.ietf.org/arch/browse/cats/</a></span>.
+        Subscribe at <span><a href="https://www.ietf.org/mailman/listinfo/cats/">https://www.ietf.org/mailman/listinfo/cats/</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+<p id="section-note.1-4">Source for this draft and an issue tracker can be found at
+        <span><a href="https://github.com/xiao777666/cats-otn-applicability">https://github.com/xiao777666/cats-otn-applicability</a></span>.<a href="#section-note.1-4" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 28 March 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2026 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Revised BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Revised BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-terminology" class="internal xref">Terminology</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-cats-framework-and-componen" class="internal xref">CATS Framework and Components</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
+                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-assumptions" class="internal xref">Assumptions</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-cats-identifiers" class="internal xref">CATS Identifiers</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-framework-overview" class="internal xref">Framework Overview</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
+                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-cats-functional-components" class="internal xref">CATS Functional Components</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4.2.1">
+                    <p id="section-toc.1-1.3.2.4.2.1.1"><a href="#section-3.4.1" class="auto internal xref">3.4.1</a>.  <a href="#name-service-sites-service-insta" class="internal xref">Service Sites, Service Instances, and Service Contact Instances</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4.2.2">
+                    <p id="section-toc.1-1.3.2.4.2.2.1"><a href="#section-3.4.2" class="auto internal xref">3.4.2</a>.  <a href="#name-cats-service-metric-agent-c" class="internal xref">CATS Service Metric Agent (C-SMA)</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4.2.3">
+                    <p id="section-toc.1-1.3.2.4.2.3.1"><a href="#section-3.4.3" class="auto internal xref">3.4.3</a>.  <a href="#name-cats-network-metric-agent-c" class="internal xref">CATS Network Metric Agent (C-NMA)</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4.2.4">
+                    <p id="section-toc.1-1.3.2.4.2.4.1"><a href="#section-3.4.4" class="auto internal xref">3.4.4</a>.  <a href="#name-cats-path-selector-c-ps" class="internal xref">CATS Path Selector (C-PS)</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4.2.5">
+                    <p id="section-toc.1-1.3.2.4.2.5.1"><a href="#section-3.4.5" class="auto internal xref">3.4.5</a>.  <a href="#name-cats-traffic-classifier-c-t" class="internal xref">CATS Traffic Classifier (C-TC)</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4.2.6">
+                    <p id="section-toc.1-1.3.2.4.2.6.1"><a href="#section-3.4.6" class="auto internal xref">3.4.6</a>.  <a href="#name-cats-aware-otn-edge-nodes" class="internal xref">CATS-Aware OTN Edge Nodes</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4.2.7">
+                    <p id="section-toc.1-1.3.2.4.2.7.1"><a href="#section-3.4.7" class="auto internal xref">3.4.7</a>.  <a href="#name-underlay-infrastructure" class="internal xref">Underlay Infrastructure</a></p>
+</li>
+                </ul>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-cats-aware-otn-workflow" class="internal xref">CATS-Aware OTN Workflow</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-service-announcement" class="internal xref">Service Announcement</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-metrics-distribution" class="internal xref">Metrics Distribution</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-service-access-processing" class="internal xref">Service Access Processing</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-service-contact-instance-af" class="internal xref">Service Contact Instance Affinity</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5">
+                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-distributed-accelerator-ass" class="internal xref">Distributed Accelerator-Assisted Compute Services</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-operational-considerations" class="internal xref">Operational Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-provisioning-of-cats-compon" class="internal xref">Provisioning of CATS Components</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-supervision-of-cats-compone" class="internal xref">Supervision of CATS Components and CATS OAM</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
+                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-deployment-considerations" class="internal xref">Deployment Considerations</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4">
+                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-implementation-consideratio" class="internal xref">Implementation Considerations on Using CATS Metrics</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5">
+                <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="auto internal xref">5.5</a>.  <a href="#name-verifying-correct-operation" class="internal xref">Verifying Correct Operations</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.6">
+                <p id="section-toc.1-1.5.2.6.1"><a href="#section-5.6" class="auto internal xref">5.6</a>.  <a href="#name-impact-on-network-operation" class="internal xref">Impact on Network Operations</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-privacy-considerations" class="internal xref">Privacy Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-acknowledgements" class="internal xref">Acknowledgements</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1">
+                <p id="section-toc.1-1.10.2.1.1"><a href="#section-10.1" class="auto internal xref">10.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.2">
+                <p id="section-toc.1-1.10.2.2.1"><a href="#section-10.2" class="auto internal xref">10.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-contributors" class="internal xref">Contributors</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
+            <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="sec-intro">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">Computing service architectures have evolved toward multi-site environments, where collaborative service sites work together to optimize
+performance. This decentralized approach addresses critical issues like long response times and ensures a more efficient use of service and
+network resources, avoiding localized resource under-utilization or exhaustion.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">Networking infrastructures that incorporate computing resources have typically employed static service dispatching mechanisms, particularly
+for the selection of service instances. Within these architectures, service-specific traffic is frequently steered toward the nearest service
+site based on optical network service availability (such as fixed light-path or pre-established connections). This approach, however, often
+overlooks the real-time network state (e.g., utilization or congestion) and the dynamic service site state (e.g., GPU availability).<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">Consistent with the use cases and requirements described in <span>[<a href="#I-D.ietf-cats-usecases-requirements" class="cite xref">I-D.ietf-cats-usecases-requirements</a>]</span>, various services stand to benefit from
+traffic steering that integrates knowledge of network capabilities and state with computing resource metrics (such as capabilities and
+current usage). AI large-model training, some AI inference jobs, and distributed computing workloads impose stringent requirements on
+network determinism. These tasks rely on high-bandwidth, deterministic latency, and minimal jitter to ensure efficient synchronization
+between massive GPU clusters. Although the Computing-Aware Traffic Steering (CATS) framework <span>[<a href="#I-D.ietf-cats-framework" class="cite xref">I-D.ietf-cats-framework</a>]</span> supports
+making joint compute- and network-aware decisions, the utilization of Optical Transport Network (OTN) features offers a reliable
+"hard-isolation" infrastructure. This integration is particularly effective for achieving the stringent performance targets required by
+demanding service environments.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">Current enterprise environments frequently distribute AI training and inference workloads across hybrid infrastructures, including
+on-premises and cloud-based networks. To ensure high availability and responsiveness, the CATS framework enables a specific service to be
+delivered through one or more service instances deployed across multiple service sites. These service instances are reached by clients via
+service contact instances. While a single service site, such as an intelligent computing center, can host multiple service contact instances,
+its available computing resources (e.g., GPU memory or FLOPS) may be constrained at any given time (usually because they are in use for other
+services). Since resource availability fluctuates across different service sites, steering traffic via dynamically reconfigurable optical
+paths provides an effective mechanism to mitigate resource limitations within a specific service site.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-5">The primary objective of traffic steering within the CATS framework is to identify an optimal service contact instance for each request, based
+on a combination of network and computing metrics. In certain scenarios, such as hierarchical or recursive contexts, this selection process
+does not necessarily expose the specific service instance that ultimately handles the client's invocation. Instead, only a service contact
+instance that acts as a gateway to multiple service instance is identified. Consequently, the metrics associated with a service contact
+instance may represent aggregate metrics derived from a collection of underlying service instances.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<p id="section-1-6">Achieving deterministic performance for packet-based (e.g., IP) traffic steering is challenging because path selection and forwarding are
+performed on a hop-by-hop basis, which may introduce variability in latency, jitter, and queuing behavior. This limitation may render
+packet-based CATS insufficient to meet the strict performance requirements of highly performance-sensitive use cases, such as AI training and
+tele-health.<a href="#section-1-6" class="pilcrow">¶</a></p>
+<p id="section-1-7">This document introduces CATS-aware OTN which is intended to complement packet-based CATS by providing deterministic transport capabilities to
+support highly performance-sensitive use cases. It maps service flows into optimized optical containers (e.g., ODUk or OSU). By incorporating
+optical-layer characteristics (e.g., deterministic path latency, wavelength continuity constraints, and optical link performance parameters)
+together with computing-layer metrics, the framework enables the establishment of an end-to-end "hard-isolation" capable of delivering the
+performance stability required by AI cluster workloads.<a href="#section-1-7" class="pilcrow">¶</a></p>
+<p id="section-1-8">The CATS framework serves as an overlay architecture designed to facilitate the selection of optimal service contact instances among multiple
+candidates. The determination of whether a service instance is deemed 'suitable' depends on a multi-dimensional evaluation of both networking
+and computing metrics. This document extends the application of the CATS framework into the OTN domain, specifying how optical path computation
+and connection establishment can be made compute-aware.<a href="#section-1-8" class="pilcrow">¶</a></p>
+<p id="section-1-9">Additionally, this document outlines the operational workflow of the primary CATS procedures (see <a href="#sec-workflow" class="auto internal xref">Section 4</a>) as they are implemented across
+both the control and data planes within a CATS-aware OTN infrastructure. It is assumed that the CATS functional elements are situated within a
+single provider network. Consequently, deployment scenarios involving the co-location of these elements at the client site are considered out
+of scope for this discussion.<a href="#section-1-9" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-terms">
+<section id="section-2">
+      <h2 id="name-terminology">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-terminology" class="section-name selfRef">Terminology</a>
+      </h2>
+<p id="section-2-1">The following terms are defined in <span>[<a href="#I-D.ietf-cats-framework" class="cite xref">I-D.ietf-cats-framework</a>]</span> and are not redefined here:<a href="#section-2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2-2.1">
+          <p id="section-2-2.1.1">Client<a href="#section-2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.2">
+          <p id="section-2-2.2.1">Computing-Aware Traffic Steering (CATS).<a href="#section-2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.3">
+          <p id="section-2-2.3.1">Metric<a href="#section-2-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.4">
+          <p id="section-2-2.4.1">Computing metrics<a href="#section-2-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.5">
+          <p id="section-2-2.5.1">Service<a href="#section-2-2.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.6">
+          <p id="section-2-2.6.1">Computing Service<a href="#section-2-2.6.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.7">
+          <p id="section-2-2.7.1">CATS Service ID (CS-ID)<a href="#section-2-2.7.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.8">
+          <p id="section-2-2.8.1">Service instance<a href="#section-2-2.8.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.9">
+          <p id="section-2-2.9.1">Service contact instance<a href="#section-2-2.9.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.10">
+          <p id="section-2-2.10.1">CATS Service Contact Instance ID (CSCI-ID)<a href="#section-2-2.10.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.11">
+          <p id="section-2-2.11.1">Service request<a href="#section-2-2.11.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.12">
+          <p id="section-2-2.12.1">CATS Path Selector (C-PS)<a href="#section-2-2.12.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.13">
+          <p id="section-2-2.13.1">CATS Service Metric Agent (C-SMA)<a href="#section-2-2.13.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.14">
+          <p id="section-2-2.14.1">CATS Network Metric Agent (C-NMA)<a href="#section-2-2.14.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-2.15">
+          <p id="section-2-2.15.1">CATS forwarder<a href="#section-2-2.15.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-2-3">The following definitions are extended from those provided in <span>[<a href="#I-D.ietf-cats-framework" class="cite xref">I-D.ietf-cats-framework</a>]</span>.<a href="#section-2-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2-4.1">
+          <p id="section-2-4.1.1">Flow: A set of packets or signals grouped logically over a defined period. Within the context of CATS-aware OTN, a flow is generally
+encapsulated into an Optical Data Unit (ODU) or a fine-grain OTN (fgOTN) connection to provide deterministic transport for AI workloads.<a href="#section-2-4.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-2-4.2">
+          <p id="section-2-4.2.1">CATS Traffic Classifier (C-TC): A functional entity responsible for identifying which packets or client signals constitute a traffic flow
+for a particular service request. It operates in coordination with the Ingress CATS-aware OTN edge node to ensure that such traffic is
+encapsulated into an OTN connection (e.g., ODUk) and follows the path computed by the C-PS. Refer to <a href="#sec-ctc" class="auto internal xref">Section 3.4.5</a> for additional details.<a href="#section-2-4.2.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-2-5">This document makes use of the following additional terms:<a href="#section-2-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2-6.1">
+          <p id="section-2-6.1.1">CATS-aware OTN edge node: An OTN node deployed at the network edge that is capable of functioning as a CATS-Forwarder. It operates based
+on forwarding instructions provided by a CATS Path Selector (C-PS), which might be integrated into or external to the CATS-aware OTN edge
+node.<a href="#section-2-6.1.1" class="pilcrow">¶</a></p>
+<p id="section-2-6.1.2">
+A CATS-aware OTN edge node can function in either an Ingress or Egress capacity. Refer to <a href="#sec-edge" class="auto internal xref">Section 3.4.6</a> for further details.<a href="#section-2-6.1.2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2-6.1.3.1">
+              <p id="section-2-6.1.3.1.1">Ingress CATS-aware OTN edge node: A functional entity that directs service-specific traffic along a path determined by CATS. In a
+CATS-aware OTN, an ingress CATS-aware OTN edge node connecting to the client site is responsible for mapping of client signals into
+ODU/fgOTN containers. It serves as the ingress point.<a href="#section-2-6.1.3.1.1" class="pilcrow">¶</a></p>
+</li>
+            <li class="normal" id="section-2-6.1.3.2">
+              <p id="section-2-6.1.3.2.1">Egress CATS-aware OTN edge node: An entity situated at the termination of a CATS-computed path that interfaces with a service site. In
+a CATS-aware OTN, an Egress CATS-aware OTN edge node connecting to the Service Contact Instance is responsible for de-mapping signals
+from ODU/fgOTN containers. It serves as the egress point.<a href="#section-2-6.1.3.2.1" class="pilcrow">¶</a></p>
+</li>
+          </ul>
+</li>
+      </ul>
+</section>
+</div>
+<div id="sec-framework">
+<section id="section-3">
+      <h2 id="name-cats-framework-and-componen">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-cats-framework-and-componen" class="section-name selfRef">CATS Framework and Components</a>
+      </h2>
+<div id="sec-assumptions">
+<section id="section-3.1">
+        <h3 id="name-assumptions">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-assumptions" class="section-name selfRef">Assumptions</a>
+        </h3>
+<p id="section-3.1-1">Under the CATS framework, a specific service can be implemented through single or multiple service instances, which may be deployed across
+one or several service sites. Each service is uniquely identified by a consistent service identifier (see <a href="#sec-ids" class="auto internal xref">Section 3.2</a>). Furthermore, CATS
+operates under the premise that these instances are accessible through one or more service contact instances, without requiring further
+internal details of the instances themselves.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-ids">
+<section id="section-3.2">
+        <h3 id="name-cats-identifiers">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-cats-identifiers" class="section-name selfRef">CATS Identifiers</a>
+        </h3>
+<p id="section-3.2-1">The CATS architecture utilizes two  functional identifiers as defined in <span>[<a href="#I-D.ietf-cats-framework" class="cite xref">I-D.ietf-cats-framework</a>]</span>: the CATS Service ID (CS-ID) and the CATS
+Service Contact Instance ID (CSCI-ID).<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">This document maintains neutrality regarding the internal structure or semantics of the CSCI-ID. Within the context of CATS-aware OTN, a
+unicast IP address may serve as a CSCI-ID to uniquely identify the location or access point of a service instance.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-fwrkover">
+<section id="section-3.3">
+        <h3 id="name-framework-overview">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-framework-overview" class="section-name selfRef">Framework Overview</a>
+        </h3>
+<p id="section-3.3-1">Figure 1 in <span>[<a href="#I-D.ietf-cats-framework" class="cite xref">I-D.ietf-cats-framework</a>]</span> provides a high-level conceptual overview of the CATS framework, abstracting the internal functional
+entities within the network.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3-2"><span>[<a href="#I-D.ietf-cats-framework" class="cite xref">I-D.ietf-cats-framework</a>]</span> further categorizes the architecture into three functional planes: the CATS Management Plane, the CATS Control
+Plane, and the CATS Data Plane. In the context of this document, the CATS Management Plane handles the configuration and maintenance of
+CATS-aware OTN edge nodes. The CATS Control Plane manages service scheduling by evaluating both computing and network status. In the
+context of OTN, this augmented Control Plane determines the establishment and cross-connection of optical paths or connections (e.g.,
+ODUk/fgOTN) across the associated CATS-aware OTN edge nodes, relaying these instructions to the CATS Data Plane for execution.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
+<p id="section-3.3-3">The CATS Data Plane manages compute-aware optical transport, which involves encapsulating service traffic into optical containers (e.g.,
+ODUk), directing them via designated optical paths toward selected service contact instances, and performing signal cross-connections to
+maintain deterministic performance throughout the transit.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
+<p id="section-3.3-4">Depending on the specific implementation and deployment scenario, these planes may comprise various functional components; subsequent
+sections will provide further details. For instance, the control plane may incorporate elements such as C-PS and C-NMA, while the data
+plane may include CATS-aware OTN edge nodes, C-TC, and other related entities.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-funccomp">
+<section id="section-3.4">
+        <h3 id="name-cats-functional-components">
+<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-cats-functional-components" class="section-name selfRef">CATS Functional Components</a>
+        </h3>
+<p id="section-3.4-1">CATS nodes determine the forwarding path for service requests received from clients by evaluating the operational status and capabilities
+of both service contact instances and the network. Within a CATS-aware OTN environment, this process incorporates the selection and
+provisioning of deterministic optical paths. The primary functional entities of the CATS framework and their interworking are illustrated
+in Figure 2 of <span>[<a href="#I-D.ietf-cats-framework" class="cite xref">I-D.ietf-cats-framework</a>]</span> where CATS-aware OTN edge nodes access the underlying OTN infrastructure.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<div id="sec-services">
+<section id="section-3.4.1">
+          <h4 id="name-service-sites-service-insta">
+<a href="#section-3.4.1" class="section-number selfRef">3.4.1. </a><a href="#name-service-sites-service-insta" class="section-name selfRef">Service Sites, Service Instances, and Service Contact Instances</a>
+          </h4>
+<p id="section-3.4.1-1">Service sites are described in <span>[<a href="#I-D.ietf-cats-framework" class="cite xref">I-D.ietf-cats-framework</a>]</span>. They represent physical or logical locations hosting the necessary resources
+(such as GPU clusters for AI training) to provide a specific service.<a href="#section-3.4.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.4.1-2">A compute service is identified by a CATS Service Identifier (CS-ID).<a href="#section-3.4.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.4.1-3">Figure 2 in <span>[<a href="#I-D.ietf-cats-framework" class="cite xref">I-D.ietf-cats-framework</a>]</span> illustrates two CATS nodes (which in a CATS-aware OTN are CATS-aware OTN edge node 1 and CATS-aware
+OTN edge node 3) that facilitate access to these service contact instances. These entities function as Egress CATS-aware OTN edge nodes
+(see <a href="#sec-edge" class="auto internal xref">Section 3.4.6</a>) implemented as CATS-aware OTN edge nodes.<a href="#section-3.4.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.4.1-4">Note: "Egress" refers to the direction of service request placement, specifically identifying the exit point of the CATS infrastructure.<a href="#section-3.4.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-csma">
+<section id="section-3.4.2">
+          <h4 id="name-cats-service-metric-agent-c">
+<a href="#section-3.4.2" class="section-number selfRef">3.4.2. </a><a href="#name-cats-service-metric-agent-c" class="section-name selfRef">CATS Service Metric Agent (C-SMA)</a>
+          </h4>
+<p id="section-3.4.2-1">As described in <span>[<a href="#I-D.ietf-cats-framework" class="cite xref">I-D.ietf-cats-framework</a>]</span>, the CATS Service Metric Agent (C-SMA) is a functional entity that collects data regarding service
+sites and server resources (such as GPU utilization and memory availability), alongside the operational status of various service instances.
+Depending on the deployment, a C-SMA can be integrated with or positioned near a service contact instance, or hosted by/adjacent to an Egress
+CATS-aware OTN edge node (see <a href="#sec-edge" class="auto internal xref">Section 3.4.6</a>). A given deployment may utilize one or multiple C-SMA instances.<a href="#section-3.4.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-cnma">
+<section id="section-3.4.3">
+          <h4 id="name-cats-network-metric-agent-c">
+<a href="#section-3.4.3" class="section-number selfRef">3.4.3. </a><a href="#name-cats-network-metric-agent-c" class="section-name selfRef">CATS Network Metric Agent (C-NMA)</a>
+          </h4>
+<p id="section-3.4.3-1">The CATS Network Metric Agent (C-NMA) is a functional component described in <span>[<a href="#I-D.ietf-cats-framework" class="cite xref">I-D.ietf-cats-framework</a>]</span>. It is responsible for acquiring
+information about the underlay network state. Within the context of CATS-aware OTN, the C-NMA retrieves optical-layer performance indicators,
+including Optical Signal-to-Noise Ratio (OSNR), wavelength or timeslot availability, and deterministic latency derived from physical fiber
+distance.<a href="#section-3.4.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.4.3-2">The C-NMA is expected to employ established mechanisms (e.g., <span>[<a href="#RFC7471" class="cite xref">RFC7471</a>]</span>, <span>[<a href="#RFC8570" class="cite xref">RFC8570</a>]</span>, and <span>[<a href="#RFC8571" class="cite xref">RFC8571</a>]</span>) in addition to specialized optical
+performance monitoring protocols.<a href="#section-3.4.3-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-cps">
+<section id="section-3.4.4">
+          <h4 id="name-cats-path-selector-c-ps">
+<a href="#section-3.4.4" class="section-number selfRef">3.4.4. </a><a href="#name-cats-path-selector-c-ps" class="section-name selfRef">CATS Path Selector (C-PS)</a>
+          </h4>
+<p id="section-3.4.4-1">The C-PS receives aggregated data from C-SMAs and C-NMAs to determine the optimal Egress CATS-aware OTN edge nodes for routing specific service
+requests. In the context of CATS-aware OTN, C-PSes focus on the computation and selection of optical paths (such as ODUk or fgOTN connections)
+to satisfy the rigorous demands of AI workloads.<a href="#section-3.4.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.4.4-2">A C-PS may employ the Path Computation Element Communication Protocol (PCEP) <span>[<a href="#RFC5440" class="cite xref">RFC5440</a>]</span> or PCEP Link-State (PCEP-LS) <span>[<a href="#I-D.ietf-pce-pcep-ls" class="cite xref">I-D.ietf-pce-pcep-ls</a>]</span>
+with PCEP-LS optical extensions <span>[<a href="#I-D.lee-pce-pcep-ls-optical" class="cite xref">I-D.lee-pce-pcep-ls-optical</a>]</span> to advertise metrics and synchronize path selection, adhering to the procedures
+outlined in <span>[<a href="#RFC9730" class="cite xref">RFC9730</a>]</span>.<a href="#section-3.4.4-2" class="pilcrow">¶</a></p>
+<p id="section-3.4.4-3">A C-PS can be embedded within CATS-aware OTN edge nodes or implemented as a standalone entity. Typically, a standalone C-PS functions as a part
+of a centralized controller, such as a Path Computation Element (PCE) <span>[<a href="#RFC4655" class="cite xref">RFC4655</a>]</span> capable of addressing optical constraints..<a href="#section-3.4.4-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-ctc">
+<section id="section-3.4.5">
+          <h4 id="name-cats-traffic-classifier-c-t">
+<a href="#section-3.4.5" class="section-number selfRef">3.4.5. </a><a href="#name-cats-traffic-classifier-c-t" class="section-name selfRef">CATS Traffic Classifier (C-TC)</a>
+          </h4>
+<p id="section-3.4.5-1">As described in <span>[<a href="#I-D.ietf-cats-framework" class="cite xref">I-D.ietf-cats-framework</a>]</span>, the CATS Traffic Classifier (C-TC) is a functional entity responsible for mapping incoming client
+signals or packets to their respective service requests. Within CATS-aware OTN, the C-TC identifies traffic through physical ports, VLAN tags,
+or specific Service IDs, ensuring these flows are encapsulated into the appropriate optical containers (e.g., ODUk/fgOTN) as directed by the
+C-PS.<a href="#section-3.4.5-1" class="pilcrow">¶</a></p>
+<p id="section-3.4.5-2">C-TCs are generally situated within CATS-aware OTN edge nodes (acting as Ingress CATS-aware OTN edge nodes).<a href="#section-3.4.5-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-edge">
+<section id="section-3.4.6">
+          <h4 id="name-cats-aware-otn-edge-nodes">
+<a href="#section-3.4.6" class="section-number selfRef">3.4.6. </a><a href="#name-cats-aware-otn-edge-nodes" class="section-name selfRef">CATS-Aware OTN Edge Nodes</a>
+          </h4>
+<p id="section-3.4.6-1">Ingress CATS-aware OTN edge nodes are tasked with directing service-specific traffic along a path determined by the CATS framework. In the
+context of this document, these are CATS-aware OTN edge nodes that encapsulate client signals into deterministic optical pipes. Egress CATS-aware
+OTN edge nodes function as the exit points for service requests by decapsulating the optical containers back into their original client formats.<a href="#section-3.4.6-1" class="pilcrow">¶</a></p>
+<p id="section-3.4.6-2">Within a CATS-aware OTN infrastructure, these CATS-aware OTN edge nodes execute wavelength or timeslot cross-connections at the physical and link
+layers. This ensures the zero-jitter and high-bandwidth transmission essential for the synchronization of AI clusters.<a href="#section-3.4.6-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-underlay">
+<section id="section-3.4.7">
+          <h4 id="name-underlay-infrastructure">
+<a href="#section-3.4.7" class="section-number selfRef">3.4.7. </a><a href="#name-underlay-infrastructure" class="section-name selfRef">Underlay Infrastructure</a>
+          </h4>
+<p id="section-3.4.7-1">The "underlay infrastructure" depicted in Figure 2 of <span>[<a href="#I-D.ietf-cats-framework" class="cite xref">I-D.ietf-cats-framework</a>]</span> represents an OTN and optical network (which may include WDM layers)
+that does not inherently need to be CATS-aware. The CATS-specific paths determined by a C-PS are distributed to the CATS-aware OTN edge nodes,
+ensuring that the underlying optical nodes (such as P-nodes) remain unaffected by CATS-level steering.<a href="#section-3.4.7-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="sec-workflow">
+<section id="section-4">
+      <h2 id="name-cats-aware-otn-workflow">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-cats-aware-otn-workflow" class="section-name selfRef">CATS-Aware OTN Workflow</a>
+      </h2>
+<p id="section-4-1">The following subsections outline an operational workflow for CATS-aware OTN. To activate CATS within a specific domain, certain provisioning steps
+are required, as detailed in <a href="#sec-provisioning" class="auto internal xref">Section 5.1</a>. Furthermore, <a href="#sec-deployment" class="auto internal xref">Section 5.3</a> explores various deployment strategies (including distributed, centralized, and
+hybrid architectures) to suit different operational environments.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<div id="sec-announce">
+<section id="section-4.1">
+        <h3 id="name-service-announcement">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-service-announcement" class="section-name selfRef">Service Announcement</a>
+        </h3>
+<p id="section-4.1-1">A service provider assigns a unique identifier, known as a CS-ID, to each service.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">Within CATS-aware OTN, the service announcement procedure facilitates the alignment of service demands with deterministic optical resources. The
+service provider or the controller links the CS-ID with particular ingress CATS-aware OTN edge nodes to ensure that traffic is accurately identified
+and encapsulated into the relevant optical containers (e.g., ODUk/fgOTN).<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-distribution">
+<section id="section-4.2">
+        <h3 id="name-metrics-distribution">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-metrics-distribution" class="section-name selfRef">Metrics Distribution</a>
+        </h3>
+<p id="section-4.2-1">As outlined in <a href="#sec-funccomp" class="auto internal xref">Section 3.4</a>, a C-SMA gathers computing capabilities and performance metrics, linking them to the service-specific CS-ID. The C-SMA is
+responsible for either aggregating these metrics across multiple service contact instances or maintaining individual records for each, or a combination
+of both approaches.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-2">Given that computing metrics often fluctuate rapidly (as discussed in Section 5.3 of <span>[<a href="#I-D.ietf-cats-usecases-requirements" class="cite xref">I-D.ietf-cats-usecases-requirements</a>]</span>), the frequency of their
+distribution is defined by the specific communication protocol employed. Potential update mechanisms include interval-based, threshold-triggered, or
+policy-driven updates, as well as the use of normalized metrics to ensure stability.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.2-3">Furthermore, the C-NMA is responsible for collecting optical network-layer capabilities and metrics. This information may be disseminated using PCEP-LS
+for optical networks <span>[<a href="#I-D.lee-pce-pcep-ls-optical" class="cite xref">I-D.lee-pce-pcep-ls-optical</a>]</span>, which may require extensions to support additional optical parameters such as link latency, OSNR,
+and wavelength availability. By distributing these optical metrics to C-PSes, the system enables them to evaluate both service and network conditions to
+identify the optimal Egress CATS-aware OTN edge node for servicing a request. Consistent with computing metrics, optical network data can be distributed
+through centralized, distributed, or hybrid frameworks, the specifics of which remain deployment-dependent.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.2-4">Optical network state may also vary over time. To avoid excessive control plane overhead or flooding, a tool such as PCEP-LS for optical networks
+<span>[<a href="#I-D.lee-pce-pcep-ls-optical" class="cite xref">I-D.lee-pce-pcep-ls-optical</a>]</span> can utilize existing mechanisms to manage state change notifications. Similar to C-SMAs, C-NMAs should be configured
+with specific triggers or intervals to regulate when updates are reported to the C-PSes.<a href="#section-4.2-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-processing">
+<section id="section-4.3">
+        <h3 id="name-service-access-processing">
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-service-access-processing" class="section-name selfRef">Service Access Processing</a>
+        </h3>
+<p id="section-4.3-1">Based on the service and optical network metrics advertised to the C-PS (for example, via PCEP-LS for optical networks <span>[<a href="#I-D.lee-pce-pcep-ls-optical" class="cite xref">I-D.lee-pce-pcep-ls-optical</a>]</span>, a
+C-PS identifies the optimal paths to the relevant CATS-aware OTN edge nodes (acting as egress points). The C-PS may be integrated into an Ingress CATS-aware
+OTN edge node (as illustrated in Figure 3 of <span>[<a href="#I-D.ietf-cats-framework" class="cite xref">I-D.ietf-cats-framework</a>]</span>) or operate as a logically centralized entity, consistent with the centralized or
+hybrid models discussed in <a href="#sec-deployment" class="auto internal xref">Section 5.3</a>.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.3-2">In the scenario depicted in Figure 3 of <span>[<a href="#I-D.ietf-cats-framework" class="cite xref">I-D.ietf-cats-framework</a>]</span>, a client initiates a service request through CATS-aware OTN edge node 1, which serves as
+the Ingress CATS-aware OTN edge node. Such service requests may involve high-bandwidth data flows (e.g., RDMA or Ethernet) identified by VLAN tags or specific
+physical ports that convey the CS-ID and associated parameters.<a href="#section-4.3-2" class="pilcrow">¶</a></p>
+<p id="section-4.3-3">Upon identifying a matching classification entry via the C-TC, the Ingress CATS-aware OTN edge node maps and encapsulates the incoming signals into an Optical
+Data Unit (ODUk) or fine-grain OTN (fgOTN) container, as defined in <span>[<a href="#ITU-T_G.709" class="cite xref">ITU-T_G.709</a>]</span> and in <span>[<a href="#ITU-T_G.709.20" class="cite xref">ITU-T_G.709.20</a>]</span>. This encapsulated traffic is subsequently steered toward the Egress CATS-aware
+OTN edge node selected by the C-PS, following the optical path established through PCEP.<a href="#section-4.3-3" class="pilcrow">¶</a></p>
+<p id="section-4.3-4">Once these optical containers arrive at the Egress CATS-aware OTN edge node, the ODUk/fgOTN overhead is stripped away (via decapsulation/demapping per
+<span>[<a href="#ITU-T_G.709" class="cite xref">ITU-T_G.709</a>]</span>), allowing the original client signals to be delivered to the designated service contact instance.<a href="#section-4.3-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-affinity">
+<section id="section-4.4">
+        <h3 id="name-service-contact-instance-af">
+<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-service-contact-instance-af" class="section-name selfRef">Service Contact Instance Affinity</a>
+        </h3>
+<p id="section-4.4-1">Service contact instance affinity requires that all packets or signals constituting a flow for a given service request are consistently routed to the same
+service contact instance. Additionally, such traffic should follow a uniform path to prevent packet mis-ordering and avoid the introduction of jitter or
+unpredictable latency. Within a CATS-aware OTN environment, this path consistency is fundamentally maintained through the use of dedicated optical channels
+which provide a circuit-switched infrastructure that inherently eliminates reordering and guarantees deterministic performance. Any CATS framework implementation
+for OTN must ensure that both the service instance selection and the subsequent path steering remain stable for the duration of a flow.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.4-2">Specifically, the traffic must be directed through the same Egress CATS-aware OTN edge node. Maintaining service affinity is a capability that can be provisioned
+on the C-PS during service deployment (applying to all associated flows) or assigned dynamically when a new service request is initiated (applying to a specific flow).<a href="#section-4.4-2" class="pilcrow">¶</a></p>
+<p id="section-4.4-3">It should be noted that the definition of a 'flow' may vary across different services. In a CATS-aware OTN infrastructure, a flow can be identified using physical
+or link-layer attributes as defined in <span>[<a href="#ITU-T_G.709" class="cite xref">ITU-T_G.709</a>]</span>, such as a designated port or a specific ODUk/fgOTN timeslot. Therefore, any protocol designed to convey
+affinity information to the C-TC should provide flexible flow identification mechanisms. More broadly, there must be a way to define and recognize the specific set
+of signals or packets that require affinity.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
+<p id="section-4.4-4">Crucially, the criteria for flow identification should remain application-independent to prevent the proliferation of service-specific affinity methods. Nonetheless,
+affinity parameters (such as identification types, methods, and timeout values) may be configurable on a per-service basis, adhering to the mapping and policy
+frameworks of <span>[<a href="#ITU-T_G.709" class="cite xref">ITU-T_G.709</a>]</span>.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
+<p id="section-4.4-5">This document does not specify the particular mechanisms used to define or enforce service contact instance affinity.<a href="#section-4.4-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-compute">
+<section id="section-4.5">
+        <h3 id="name-distributed-accelerator-ass">
+<a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-distributed-accelerator-ass" class="section-name selfRef">Distributed Accelerator-Assisted Compute Services</a>
+        </h3>
+<p id="section-4.5-1">Operators are increasingly deploying accelerator-assisted compute services (e.g., GPU, NPU or FPGA clusters) across geographically distributed sites. These services are characterized by dynamic capacity availability, where the compute resources at any given site fluctuate based on concurrent workload demands. Consequently, a specific computing service (identified by a CS-ID) may be reachable via multiple candidate service contact instances (CSCI-IDs), with no single site guaranteeing consistent capacity at all times.<a href="#section-4.5-1" class="pilcrow">¶</a></p>
+<p id="section-4.5-2">This service model imposes two simultaneous and distinct requirements on the infrastructure. First, a compute-aware decision is required: the selected site must have sufficient available accelerator capacity at the time of the request. Second, a network-aware decision is required: once a site is selected, the data path between the client and the accelerator pool must provide sustained high bandwidth, bounded latency and high availability. Steering based on only one metric is insufficient: compute-only steering may result in selecting a site accessible only via congested or non-deterministic paths, while network-only steering may select a deterministic path to a site lacking the necessary compute capacity.<a href="#section-4.5-2" class="pilcrow">¶</a></p>
+<p id="section-4.5-3">The OTN for CATS architecture addresses this by jointly evaluating both computing and network metrics during the selection of a service contact instance. The integration of OTN provides a critical advantage: it enables the network component of the decision to be fulfilled with hard, deterministic guarantees rather than statistical probabilities. By mapping selected service flows into dedicated ODUk or fine-grain OTN (fgOTN) containers, the infrastructure establishes a hard-isolated, deterministic transport pipe to the chosen site. This maintains the necessary performance bounds for the entire duration of the workload, making it highly applicable to various high-performance tasks, including large-model training and time-sensitive inference.<a href="#section-4.5-3" class="pilcrow">¶</a></p>
+<p id="section-4.5-4">To realize this use case, the network executes the following operational workflow, leveraging the functional components of the CATS framework:<a href="#section-4.5-4" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-4.5-5">
+<li id="section-4.5-5.1">
+            <span class="break"></span><dl class="dlParallel" id="section-4.5-5.1.1">
+              <dt id="section-4.5-5.1.1.1">Metric Collection and Distribution:</dt>
+              <dd style="margin-left: 1.5em" id="section-4.5-5.1.1.2">
+                <p id="section-4.5-5.1.1.2.1">The C-SMA (CATS Service Metric Agent) continuously monitors the real-time availability of accelerator resources (e.g., available GPU memory or FLOPS) at each distributed service site and distributes these computing metrics<a href="#section-4.5-5.1.1.2.1" class="pilcrow">¶</a></p>
+</dd>
+              <dd class="break"></dd>
+<dt id="section-4.5-5.1.1.3"></dt>
+              <dd style="margin-left: 1.5em" id="section-4.5-5.1.1.4">
+                <p id="section-4.5-5.1.1.4.1">Concurrently, the C-NMA (CATS Network Metric Agent) gathers optical network state information, including available ODUk/fgOTN bandwidth, deterministic latency values and link performance across the optical infrastructure.<a href="#section-4.5-5.1.1.4.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+</dl>
+</li>
+          <li id="section-4.5-5.2">
+            <span class="break"></span><dl class="dlParallel" id="section-4.5-5.2.1">
+              <dt id="section-4.5-5.2.1.1">Service Request and Classification:</dt>
+              <dd style="margin-left: 1.5em" id="section-4.5-5.2.1.2">
+                <p id="section-4.5-5.2.1.2.1">When a client initiates a high-performance compute request, the C-TC (CATS Traffic Classifier) at the ingress CATS-aware OTN edge node intercepts the traffic. It identifies the target computing service by extracting the corresponding CS-ID.<a href="#section-4.5-5.2.1.2.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+</dl>
+</li>
+          <li id="section-4.5-5.3">
+            <span class="break"></span><dl class="dlParallel" id="section-4.5-5.3.1">
+              <dt id="section-4.5-5.3.1.1">Joint Path Selection:</dt>
+              <dd style="margin-left: 1.5em" id="section-4.5-5.3.1.2">
+                <p id="section-4.5-5.3.1.2.1">The C-PS (CATS Path Selector) evaluates the request against the collected metrics. It selects the optimal service contact instance (CSCI-ID) that possesses the required accelerator capacity, while simultaneously computing an optical path that satisfies the strict bandwidth and deterministic latency requirements.<a href="#section-4.5-5.3.1.2.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+</dl>
+</li>
+          <li id="section-4.5-5.4">
+            <span class="break"></span><dl class="dlParallel" id="section-4.5-5.4.1">
+              <dt id="section-4.5-5.4.1.1">Deterministic Transport Establishment:</dt>
+              <dd style="margin-left: 1.5em" id="section-4.5-5.4.1.2">
+                <p id="section-4.5-5.4.1.2.1">Based on the decision from the C-PS, the ingress CATS-aware OTN edge node maps the incoming service flow into a dedicated ODUk or fgOTN container. This triggers the establishment of a hard-isolated optical connection to the selected service site, bypassing packet-level queuing and jitter.<a href="#section-4.5-5.4.1.2.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+</dl>
+</li>
+          <li id="section-4.5-5.5">
+            <span class="break"></span><dl class="dlParallel" id="section-4.5-5.5.1">
+              <dt id="section-4.5-5.5.1.1">Workload Execution and Proactive Assurance:</dt>
+              <dd style="margin-left: 1.5em" id="section-4.5-5.5.1.2">
+                <p id="section-4.5-5.5.1.2.1">The accelerator-assisted workload is executed over this deterministic pipe. For the duration of the session, the connection delivers proactive assurance by maintaining bounded latency and guaranteed bandwidth. To ensure uninterrupted performance until completion, the established path maintains service contact instance affinity for all subsequent flows of the same session.<a href="#section-4.5-5.5.1.2.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+</dl>
+</li>
+        </ol>
+</section>
+</div>
+</section>
+</div>
+<div id="sec-operational">
+<section id="section-5">
+      <h2 id="name-operational-considerations">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-operational-considerations" class="section-name selfRef">Operational Considerations</a>
+      </h2>
+<div id="sec-provisioning">
+<section id="section-5.1">
+        <h3 id="name-provisioning-of-cats-compon">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-provisioning-of-cats-compon" class="section-name selfRef">Provisioning of CATS Components</a>
+        </h3>
+<p id="section-5.1-1">The deployment of CATS within an OTN can be achieved through an incremental approach. It is not mandatory for all CATS-aware OTN edge nodes (such as Terminal Muxes)
+to be upgraded simultaneously. Support for CATS awareness may be restricted to specific CATS-aware OTN edge nodes. For example, CATS capabilities could be prioritized
+on CATS-aware OTN edge nodes that interconnect AI computing data centers (DCI nodes), while the remaining intermediate nodes maintain transparent transport.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-2">Beyond the CATS steering policies transmitted by a C-PS to an Ingress CATS-aware OTN edge node, several provisioning actions are necessary. These tasks include, but
+are not limited to:<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.1-3.1">
+            <p id="section-5.1-3.1.1">Locating Ingress Entities: Supplying C-PS elements with the locators of available Ingress CATS-aware OTN edge nodes (e.g., node identifiers or termination points).
+These locators may also be dynamically discovered from the network topology via the optical control plane.<a href="#section-5.1-3.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-3.2">
+            <p id="section-5.1-3.2.1">Agent Connectivity: Providing the necessary information to establish communication between C-PS elements, C-NMAs, and C-SMAs.<a href="#section-5.1-3.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-3.3">
+            <p id="section-5.1-3.3.1">Identifier Management: Assigning CS-ID/CSCI-ID identifiers and associating them with particular service contact instances.<a href="#section-5.1-3.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-3.4">
+            <p id="section-5.1-3.4.1">Policy Definition: Configuring C-PS elements with service-specific optimization metrics and policies, emphasizing latency determinism, bandwidth rigidity, and
+optical-layer availability to meet the requirements of (for example) AI training tasks.<a href="#section-5.1-3.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-3.5">
+            <p id="section-5.1-3.5.1">Traffic Mapping: Configuring the mapping and multiplexing functions of CATS-aware OTN edge nodes, such as allocating AI traffic to designated wavelengths or
+ODUk/fgOTN timeslots to ensure physical isolation. This also includes credentials for mutual authentication between peer CATS-aware OTN edge nodes.<a href="#section-5.1-3.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-3.6">
+            <p id="section-5.1-3.6.1">Classifier Initialization: Clearing or updating the classification tables within C-TC elements.<a href="#section-5.1-3.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-3.7">
+            <p id="section-5.1-3.7.1">Monitoring and Correlation: Initializing traffic counters and performance monitoring (PM) parameters at CATS-aware OTN edge nodes to facilitate correlation between
+Ingress and Egress CATS-aware OTN edge nodes. This correlation is essential for identifying performance degradations in the underlying optical transport layer,
+utilizing the native OAM mechanisms of OTN for end-to-end delay and error-rate monitoring.<a href="#section-5.1-3.7.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-5.1-4">Provisioning encompasses both static configuration and dynamic distribution via protocols. These tasks can be implemented through various mechanisms, such as
+NETCONF <span>[<a href="#RFC6241" class="cite xref">RFC6241</a>]</span>, IPFIX <span>[<a href="#RFC7011" class="cite xref">RFC7011</a>]</span>, RESTCONF <span>[<a href="#RFC8040" class="cite xref">RFC8040</a>]</span>, or YANG-Push <span>[<a href="#RFC8639" class="cite xref">RFC8639</a>]</span>. Detailed discussion of specific CATS extensions for these protocols is
+beyond the scope of this document.<a href="#section-5.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-supervision">
+<section id="section-5.2">
+        <h3 id="name-supervision-of-cats-compone">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-supervision-of-cats-compone" class="section-name selfRef">Supervision of CATS Components and CATS OAM</a>
+        </h3>
+<p id="section-5.2-1">Complementary supervision and OAM mechanisms are essential to guide CATS provisioning and evaluate the effectiveness of CATS operations. Key requirements include:<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.2-2.1">
+            <p id="section-5.2-2.1.1">Capabilities Exposure: Reporting the classification features of C-TC elements (e.g., identifying AI traffic through designated physical ports or VLAN tags for traffic mapping).<a href="#section-5.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.2-2.2">
+            <p id="section-5.2-2.2.1">Mapping Capabilities: Identifying the mapping and multiplexing functions supported by CATS-aware OTN edge nodes, adhering to the frameworks established in <span>[<a href="#ITU-T_G.709" class="cite xref">ITU-T_G.709</a>]</span>.<a href="#section-5.2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.2-2.3">
+            <p id="section-5.2-2.3.1">State Retrieval: Accessing the active classification and mapping tables from C-TC elements.<a href="#section-5.2-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.2-2.4">
+            <p id="section-5.2-2.4.1">Forwarding Rules: Retrieving current cross-connect and timeslot assignment configurations within CATS-aware OTN edge nodes.<a href="#section-5.2-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.2-2.5">
+            <p id="section-5.2-2.5.1">Policy Auditing: Extracting the active policies currently residing in C-PSes.<a href="#section-5.2-2.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.2-2.6">
+            <p id="section-5.2-2.6.1">Performance Monitoring: Collecting OTN performance monitoring (PM) data (such as Bit Error Rate (BER), Pre-FEC/Post-FEC status, and wavelength power) from CATS-aware
+OTN edge nodes to simplify operational correlation between Ingress and Egress CATS-aware OTN edge nodes.<a href="#section-5.2-2.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.2-2.7">
+            <p id="section-5.2-2.7.1">Hardware-level Verification: Utilizing hardware-based OAM tools (e.g., OTN Overhead and Tandem Connection Monitoring (TCM)) to verify the integrity of various functional
+entities, including classification, cross-connect, and forwarding behaviors. In contrast to packet-based OAM, OTN OAM leverages dedicated frame overhead, which prevents
+any impact on service traffic. Refer to <a href="#sec-verifying" class="auto internal xref">Section 5.5</a>.<a href="#section-5.2-2.7.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.2-2.8">
+            <p id="section-5.2-2.8.1">Deterministic Measurement: Implementing OAM tools focused on deterministic performance, specifically for high-precision monitoring of latency and jitter.<a href="#section-5.2-2.8.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="sec-deployment">
+<section id="section-5.3">
+        <h3 id="name-deployment-considerations">
+<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-deployment-considerations" class="section-name selfRef">Deployment Considerations</a>
+        </h3>
+<p id="section-5.3-1">This document remains agnostic regarding the specific implementation and deployment of CATS-aware OTN functional entities. In practice, whether a CATS architecture adopts
+a fully decentralized design or utilizes a combination of centralized (e.g., a centralized C-PS) and distributed components (e.g., C-TCs) is a deployment-specific decision.
+Within a CATS-aware OTN infrastructure, this typically necessitates coordination between Customer Network Controllers (CNCs) and Physical Network Controllers (PNCs) as
+outlined in the ACTN framework <span>[<a href="#RFC8453" class="cite xref">RFC8453</a>]</span>. Furthermore, specific use cases <span>[<a href="#I-D.ietf-cats-usecases-requirements" class="cite xref">I-D.ietf-cats-usecases-requirements</a>]</span> may influence the chosen deployment strategy.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.3-2">For instance, in a centralized architecture, a logically centralized path computation entity (such as a PCE or an ACTN MDSC) aggregates both computing metrics from C-SMAs
+and network performance data. In this scenario, the path computation logic processes service requests to determine the optimal paths to service contact instances. For
+workloads involving high-bandwidth and long-duration flows (such as AI training), paths and optical channels (e.g., ODUk/fgOTN) may be pre-provisioned to guarantee zero
+packet loss and immediate service availability. The C-PS then identifies the most suitable path based on current metrics and synchronizes these decisions with the C-TCs.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
+<p id="section-5.3-3">Depending on the distribution and collection mechanisms for computing metrics, the CATS framework supports three primary deployment models as set out in <span>[<a href="#I-D.ietf-cats-framework" class="cite xref">I-D.ietf-cats-framework</a>]</span>.
+In a CATS-aware OTN context, these can be re-stated as follows:<a href="#section-5.3-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.3-4.1">
+            <p id="section-5.3-4.1.1">Distributed model: In this model, the service scheduling function is executed by the CATS-aware OTN edge nodes; consequently, the C-PS is integrated within an Ingress
+CATS-aware OTN edge node.<a href="#section-5.3-4.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.3-4.2">
+            <p id="section-5.3-4.2.1">Centralized model: Centralized control entities (e.g., CNC or MDSC) collect all computing metrics and compute forwarding paths for service requests via PCEP and
+synchronize with the Ingress CATS-aware OTN edge nodes. Here, the C-PS resides within the centralized controller.<a href="#section-5.3-4.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.3-4.3">
+            <p id="section-5.3-4.3.1">Hybrid model: This model integrates elements of both distributed and centralized architectures.<a href="#section-5.3-4.3.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-5.3-5">In the hybrid approach, some computing metrics are shared among network devices while others are gathered by a centralized controller. For example, static optical parameters
+(such as fiber distance, Shared Risk Link Groups (SRLG), or maximum port capacity) may be distributed among network devices due to their stability. Conversely, highly dynamic
+information (such as GPU resource utilization, wavelength availability, or optical power fluctuations) is centralized to prevent excessive flooding within the distributed
+control plane. Service scheduling may be performed by a centralized controller, Ingress CATS-aware OTN edge nodes (co-located with a C-PS), or both, based on local policies.
+When path computation is distributed, centralized entities must communicate collected path information to the Ingress CATS-aware OTN edge nodes (co-located with a C-PS) to
+ensure the full metric set is considered for scheduling.<a href="#section-5.3-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-implementation">
+<section id="section-5.4">
+        <h3 id="name-implementation-consideratio">
+<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-implementation-consideratio" class="section-name selfRef">Implementation Considerations on Using CATS Metrics</a>
+        </h3>
+<p id="section-5.4-1"><span>[<a href="#I-D.ietf-cats-framework" class="cite xref">I-D.ietf-cats-framework</a>]</span> observes the scaling concerns when distributing computing-related metrics.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
+<p id="section-5.4-2">Within CATS-aware OTN infrastructure, normalization of metrics is important for managing heterogeneous hardware accelerators, such as GPUs, NPUs, or FPGAs. These normalized
+computing scores can then be correlated with OTN-specific network resources (including available ODUk/fgOTN timeslots or bandwidth) to create a composite metric for path
+selection. For further discussion on metrics and their distribution, refer to <span>[<a href="#I-D.ietf-cats-metric-definition" class="cite xref">I-D.ietf-cats-metric-definition</a>]</span>.<a href="#section-5.4-2" class="pilcrow">¶</a></p>
+<p id="section-5.4-3">The placement of normalization and aggregation functions depends on the available processing capacity of the CATS components. One strategy is to host these functions away
+from C-PSes, particularly when C-PSes are integrated into CATS-aware OTN edge nodes. Consequently, these functions may be situated at service contact instances, C-SMAs, or
+specialized computing gateways interfaced with the OTN ingress.<a href="#section-5.4-3" class="pilcrow">¶</a></p>
+<p id="section-5.4-4">In scenarios where C-SMAs are co-located with CATS-aware OTN edge nodes that have limited processing power, implementing normalization within the C-SMA may generate excessive
+overhead and degrade the efficiency of metric distribution (for example via PCEP-LS optical extensions <span>[<a href="#I-D.lee-pce-pcep-ls-optical" class="cite xref">I-D.lee-pce-pcep-ls-optical</a>]</span>. Therefore, this document recommends
+performing normalization at the service contact instances. Aggregation functions, however, may reside in either the C-SMA or the service contact instances.<a href="#section-5.4-4" class="pilcrow">¶</a></p>
+<p id="section-5.4-5">To maintain consistency in CATS path selection, all participating CATS components must utilize identical normalization and aggregation functions. Furthermore, in environments
+involving multiple vendors or where service contact instances and C-SMAs are provided by different parties, a standardized set of common functions is necessary to ensure fair
+selection across all instances. To this end, these functions must be standardized, potentially leveraging YANG models compatible with ACTN PNC/CNC architectures. CATS
+implementations must provide a configuration parameter to manage and activate these specific functions in contexts where multiple versions are supported.<a href="#section-5.4-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-verifying">
+<section id="section-5.5">
+        <h3 id="name-verifying-correct-operation">
+<a href="#section-5.5" class="section-number selfRef">5.5. </a><a href="#name-verifying-correct-operation" class="section-name selfRef">Verifying Correct Operations</a>
+        </h3>
+<p id="section-5.5-1">A CATS implementation must maintain logs of error events (such as light-path switching failures, wavelength conflicts, or computing resource downtime) to facilitate enhanced
+network management and operations. Mechanisms to evaluate reachability and perform CATS path tracing should be provided.<a href="#section-5.5-1" class="pilcrow">¶</a></p>
+<p id="section-5.5-2">Within a CATS-aware OTN infrastructure, reachability assessment utilizes hardware-level monitoring of end-to-end optical or electrical trails. The operational status of a CATS
+path can be verified in real-time using ODUk/fgOTN maintenance signals (e.g., Alarm Indication Signal (AIS) or Locked (LCK) signals) as specified in <span>[<a href="#ITU-T_G.709" class="cite xref">ITU-T_G.709</a>]</span>, thereby
+removing the requirement for active probe packets.<a href="#section-5.5-2" class="pilcrow">¶</a></p>
+<p id="section-5.5-3">Additionally, path tracing is supported by the Trail Trace Identifier (TTI) within the OTN frame overhead. This enables the physical verification that traffic is traversing
+the exact sequence of nodes as determined by the C-PS. Such verification data should be synchronized with the PNC or CNC to maintain alignment between the control plane
+steering policies and the actual state of the data plane.<a href="#section-5.5-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-impact">
+<section id="section-5.6">
+        <h3 id="name-impact-on-network-operation">
+<a href="#section-5.6" class="section-number selfRef">5.6. </a><a href="#name-impact-on-network-operation" class="section-name selfRef">Impact on Network Operations</a>
+        </h3>
+<p id="section-5.6-1">The collection and distribution of computing metrics within the CATS framework necessitate a management function to coordinate interactions between network and computing
+resources. This role can be fulfilled by an orchestrator, such as a Customer Network Controller (CNC) or a Multi-Domain Service Coordinator (MDSC) within the ACTN framework
+<span>[<a href="#RFC8453" class="cite xref">RFC8453</a>]</span>, which interfaces with both the C-SMA and C-NMA. Utilizing existing optical control hierarchies in this manner minimizes the requirement for entirely new functional
+entities.<a href="#section-5.6-1" class="pilcrow">¶</a></p>
+<p id="section-5.6-2">While introducing this coordination function may increase network management complexity (particularly if it is exclusively dedicated to CATS) this is balanced by the superior
+determinism offered by the OTN layer for workloads. In contrast to connectionless IP networks, CATS-aware OTN is connection-oriented. Once computing-aware paths are provisioned
+(for example, through PCEP-LS mechanisms for optical networks <span>[<a href="#I-D.lee-pce-pcep-ls-optical" class="cite xref">I-D.lee-pce-pcep-ls-optical</a>]</span>) operational efforts transition from addressing routing oscillations to maintaining
+stable, high-bandwidth "hard-isolations." This approach greatly streamlines the supervision of long-duration traffic flows, such as for AI training traffic.<a href="#section-5.6-2" class="pilcrow">¶</a></p>
+<p id="section-5.6-3">Additionally, the CNC can act as a Northbound interface for external computing platforms, such as AI job schedulers, to enable coordinated resource allocation. This allows the
+CATS-aware OTN infrastructure to adapt reliably to the specific latency and topological demands of, for example, distributed AI clusters.<a href="#section-5.6-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="sec-iana">
+<section id="section-6">
+      <h2 id="name-iana-considerations">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-6-1">This document does not make any requests of IANA.<a href="#section-6-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-security">
+<section id="section-7">
+      <h2 id="name-security-considerations">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-7-1">Computing resource information is highly dynamic, fluctuating rapidly as service instances are initialized or terminated. If this information is disseminated via a distribution
+protocol (such as PCEP-LS for optical networks <span>[<a href="#I-D.lee-pce-pcep-ls-optical" class="cite xref">I-D.lee-pce-pcep-ls-optical</a>]</span>, an excessive volume of updates can undermine network stability. An attacker might exploit this
+vulnerability by rapidly creating and deleting service instances to trigger instability. Consequently, CATS solutions must implement safeguards against such behavior, including
+aggregation techniques, dampening mechanisms, and threshold-triggered updates. Within CATS-aware OTN, where path setup is resource-intensive, the architecture should incorporate
+a "computing fluctuation window." This ensures that optical layer reconfigurations are only initiated by significant or sustained shifts in compute metrics.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-2">The data distributed by C-SMAs and C-NMAs is often sensitive, as it may reveal network intelligence, the precise topology of GPU clusters, and the specific locations of compute
+resources within service sites. Attackers could leverage this data to pinpoint vulnerabilities in a provider's infrastructure. Furthermore, unauthorized modification of this
+information could disrupt service delivery or redirect traffic to malicious service instances. CATS-aware OTN provides a distinct security advantage by supporting Layer 1
+physical layer encryption (e.g., OTN-SEC). This provides high-throughput security for data flows without the header overhead or latency increases typical of higher-layer
+encryption like IPsec, which is vital for the performance of latency-sensitive AI training.<a href="#section-7-2" class="pilcrow">¶</a></p>
+<p id="section-7-3">CATS implementations must provide robust authentication and integrity protection between C-SMAs/C-NMAs and C-PSes, as well as between C-PSes and Ingress CATS-aware OTN edge
+nodes. In an ACTN-based environment, stringent mutual authentication is required between the PNC/CNC and the CATS-aware OTN edge nodes to prevent unauthorized changes to
+optical cross-connects or timeslot allocations. Additionally, C-SMAs must have mechanisms to authenticate the services for which they provide data to the C-PS selection logic.<a href="#section-7-3" class="pilcrow">¶</a></p>
+<p id="section-7-4">This document is restricted to a single service provider scenario. The centralized architecture of the OTN control plane within a single domain facilitates a closed management
+loop, effectively minimizing the external attack surface. Therefore, security issues specific to multi-provider deployments are considered out of scope.<a href="#section-7-4" class="pilcrow">¶</a></p>
+<p id="section-7-5">CATS-aware OTN edge nodes serve as the ingress points for computing traffic entering the network. In the absence of device access authentication, unauthorized devices could access the network, acting as attack vectors for traffic injection, eavesdropping, or lateral movement.
+Therefore, edge nodes MUST support access control:
+* Identity authentication MUST be performed before a device connects to the network to prevent the access of illegal or rogue devices. Only successfully authenticated devices are permitted to join the network and carry computing traffic.
+* Access MUST be denied for illegal devices, and such access attempt events MUST be recorded in audit logs.<a href="#section-7-5" class="pilcrow">¶</a></p>
+<p id="section-7-6">Network awareness state notifications (e.g., device status, link metrics) and policy notifications (e.g., routing policies, traffic steering rules) directly affect the forwarding paths of computing traffic. An attacker could leverage forged or tampered notification messages to publish false status information or malicious policies, performing malicious traffic steering or traffic hijacking. This may result in computing traffic being redirected to attacker-controlled nodes or discarded.
+Sensitive communications require message origin authentication and message integrity protection:
+* Network awareness state and policy notifications MUST be protected for integrity (e.g., using Message Authentication Codes) to detect any tampering during transmission.
+* The source of the notifications MUST be authenticated to ensure that only authorized entities (e.g., legitimate C-NMAs or C-PSes) can send notifications.
+* The receiver MUST verify the source and message integrity before executing any announced states or policies. If verification fails, a security alarm MUST be triggered, and the notification message MUST be discarded.<a href="#section-7-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-privacy">
+<section id="section-8">
+      <h2 id="name-privacy-considerations">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-privacy-considerations" class="section-name selfRef">Privacy Considerations</a>
+      </h2>
+<p id="section-8-1">CATS solutions are required to prevent on-path nodes within the underlay infrastructure from performing client fingerprinting or tracking (e.g., identifying which client is
+accessing a particular service). Generally, the CATS framework must ensure that personal data is not disclosed to external parties, exceeding the information already present
+in the original packets transmitted by the client.<a href="#section-8-1" class="pilcrow">¶</a></p>
+<p id="section-8-2">Within a CATS-aware OTN infrastructure, privacy is naturally bolstered by the use of Layer 1 rigid "Hard-isolations." Because intermediate elements (such as Optical Amplifiers)
+function at the physical layer, they are unable to inspect the payload of the encapsulated traffic. This transparency at the physical layer ensures that on-path nodes cannot
+perform traffic analysis or track application behavior through packet header inspection.<a href="#section-8-2" class="pilcrow">¶</a></p>
+<p id="section-8-3">In certain scenarios, a CATS solution might require knowledge of specific applications, clients, or user identities. Such sensitive data must be protected via encryption. To
+mitigate the risk of information leakage among CATS components, path information computed by the C-PS and specific mapping instructions (such as ODUk/fgOTN timeslot assignments)
+should be encrypted during distribution. For instance, communication between the PNC/CNC and CATS-aware OTN edge nodes should be protected using secure southbound protocols like
+NETCONF over TLS or RESTCONF. The choice of encryption-whether at the network, transport, or application layer-is implementation-dependent and remains outside the scope of this
+document.<a href="#section-8-3" class="pilcrow">¶</a></p>
+<p id="section-8-4">This document is restricted to a single service provider environment. Consequently, privacy issues related to multi-provider deployments are not addressed here.<a href="#section-8-4" class="pilcrow">¶</a></p>
+<p id="section-8-5">For further details on privacy, refer to <span>[<a href="#RFC6462" class="cite xref">RFC6462</a>]</span> and <span>[<a href="#RFC6973" class="cite xref">RFC6973</a>]</span>.<a href="#section-8-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="acknowledgements">
+<section id="section-9">
+      <h2 id="name-acknowledgements">
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
+      </h2>
+<p id="section-9-1">The authors wish to acknowledge Adrian Farrel for helpful discussions.<a href="#section-9-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-combined-references">
+<section id="section-10">
+      <h2 id="name-references">
+<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-references" class="section-name selfRef">References</a>
+      </h2>
+<div id="sec-normative-references">
+<section id="section-10.1">
+        <h3 id="name-normative-references">
+<a href="#section-10.1" class="section-number selfRef">10.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
+<dl class="references">
+<dt id="I-D.ietf-cats-framework">[I-D.ietf-cats-framework]</dt>
+        <dd>
+<span class="refAuthor">Li, C.</span>, <span class="refAuthor">Du, Z.</span>, <span class="refAuthor">Boucadair, M.</span>, <span class="refAuthor">Contreras, L. M.</span>, and <span class="refAuthor">J. Drake</span>, <span class="refTitle">"A Framework for Computing-Aware Traffic Steering (CATS)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cats-framework-24</span>, <time datetime="2026-04-02" class="refDate">2 April 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cats-framework-24">https://datatracker.ietf.org/doc/html/draft-ietf-cats-framework-24</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-cats-usecases-requirements">[I-D.ietf-cats-usecases-requirements]</dt>
+        <dd>
+<span class="refAuthor">Yao, K.</span>, <span class="refAuthor">Contreras, L. M.</span>, <span class="refAuthor">Shi, H.</span>, <span class="refAuthor">Zhang, S.</span>, and <span class="refAuthor">Q. An</span>, <span class="refTitle">"Computing-Aware Traffic Steering (CATS) Problem Statement, Use Cases, and Requirements"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cats-usecases-requirements-14</span>, <time datetime="2026-02-02" class="refDate">2 February 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cats-usecases-requirements-14">https://datatracker.ietf.org/doc/html/draft-ietf-cats-usecases-requirements-14</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="ITU-T_G.709">[ITU-T_G.709]</dt>
+        <dd>
+<span class="refAuthor">International Telecommunication Union</span>, <span class="refTitle">"Interfaces for the optical transport network"</span>, <span class="seriesInfo">ITU-T G.709/Y.1331 (2020)</span>, <time datetime="2020-06" class="refDate">June 2020</time>, <span>&lt;<a href="&lt;https://www.itu.int/rec/T-REC-G.709&gt;">&lt;https://www.itu.int/rec/T-REC-G.709&gt;</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="ITU-T_G.709.20">[ITU-T_G.709.20]</dt>
+        <dd>
+<span class="refAuthor">International Telecommunication Union</span>, <span class="refTitle">"Overview of fine grain OTN"</span>, <span class="seriesInfo">ITU-T G.709.20 (2025)</span>, <time datetime="2025-05" class="refDate">May 2025</time>, <span>&lt;<a href="https://www.itu.int/rec/T-REC-G.709.20/">https://www.itu.int/rec/T-REC-G.709.20/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6462">[RFC6462]</dt>
+        <dd>
+<span class="refAuthor">Cooper, A.</span>, <span class="refTitle">"Report from the Internet Privacy Workshop"</span>, <span class="seriesInfo">RFC 6462</span>, <span class="seriesInfo">DOI 10.17487/RFC6462</span>, <time datetime="2012-01" class="refDate">January 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6462">https://www.rfc-editor.org/rfc/rfc6462</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6973">[RFC6973]</dt>
+        <dd>
+<span class="refAuthor">Cooper, A.</span>, <span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Aboba, B.</span>, <span class="refAuthor">Peterson, J.</span>, <span class="refAuthor">Morris, J.</span>, <span class="refAuthor">Hansen, M.</span>, and <span class="refAuthor">R. Smith</span>, <span class="refTitle">"Privacy Considerations for Internet Protocols"</span>, <span class="seriesInfo">RFC 6973</span>, <span class="seriesInfo">DOI 10.17487/RFC6973</span>, <time datetime="2013-07" class="refDate">July 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6973">https://www.rfc-editor.org/rfc/rfc6973</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8453">[RFC8453]</dt>
+      <dd>
+<span class="refAuthor">Ceccarelli, D., Ed.</span> and <span class="refAuthor">Y. Lee, Ed.</span>, <span class="refTitle">"Framework for Abstraction and Control of TE Networks (ACTN)"</span>, <span class="seriesInfo">RFC 8453</span>, <span class="seriesInfo">DOI 10.17487/RFC8453</span>, <time datetime="2018-08" class="refDate">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8453">https://www.rfc-editor.org/rfc/rfc8453</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="sec-informative-references">
+<section id="section-10.2">
+        <h3 id="name-informative-references">
+<a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="I-D.ietf-cats-metric-definition">[I-D.ietf-cats-metric-definition]</dt>
+        <dd>
+<span class="refAuthor">Yao, K.</span>, <span class="refAuthor">Li, C.</span>, <span class="refAuthor">Contreras, L. M.</span>, <span class="refAuthor">Ros-Giralt, J.</span>, and <span class="refAuthor">G. Zeng</span>, <span class="refTitle">"CATS Metrics Definition"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-cats-metric-definition-11</span>, <time datetime="2026-09-04" class="refDate">4 September 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-cats-metric-definition-11">https://datatracker.ietf.org/doc/html/draft-ietf-cats-metric-definition-11</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-pce-pcep-ls">[I-D.ietf-pce-pcep-ls]</dt>
+        <dd>
+<span class="refAuthor">Dhody, D.</span>, <span class="refAuthor">Peng, S.</span>, <span class="refAuthor">Ceccarelli, D.</span>, <span class="refAuthor">Wang, A.</span>, and <span class="refAuthor">G. S. Mishra</span>, <span class="refTitle">"PCEP extensions for Distribution of Link-State and TE Information"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-pce-pcep-ls-07</span>, <time datetime="2026-07-04" class="refDate">4 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-pce-pcep-ls-07">https://datatracker.ietf.org/doc/html/draft-ietf-pce-pcep-ls-07</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.lee-pce-pcep-ls-optical">[I-D.lee-pce-pcep-ls-optical]</dt>
+        <dd>
+<span class="refAuthor">Zhao, Y.</span>, <span class="refAuthor">Ceccarelli, D.</span>, <span class="refAuthor">LiXiao</span>, <span class="refAuthor">Yoon, B. Y.</span>, and <span class="refAuthor">A. Farrel</span>, <span class="refTitle">"PCEP Extensions for Distribution of Link-State and TE Information for Optical Networks"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-lee-pce-pcep-ls-optical-18</span>, <time datetime="2026-08-09" class="refDate">9 August 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-lee-pce-pcep-ls-optical-18">https://datatracker.ietf.org/doc/html/draft-lee-pce-pcep-ls-optical-18</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4655">[RFC4655]</dt>
+        <dd>
+<span class="refAuthor">Farrel, A.</span>, <span class="refAuthor">Vasseur, J.-P.</span>, and <span class="refAuthor">J. Ash</span>, <span class="refTitle">"A Path Computation Element (PCE)-Based Architecture"</span>, <span class="seriesInfo">RFC 4655</span>, <span class="seriesInfo">DOI 10.17487/RFC4655</span>, <time datetime="2006-08" class="refDate">August 2006</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4655">https://www.rfc-editor.org/rfc/rfc4655</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5440">[RFC5440]</dt>
+        <dd>
+<span class="refAuthor">Vasseur, JP., Ed.</span> and <span class="refAuthor">JL. Le Roux, Ed.</span>, <span class="refTitle">"Path Computation Element (PCE) Communication Protocol (PCEP)"</span>, <span class="seriesInfo">RFC 5440</span>, <span class="seriesInfo">DOI 10.17487/RFC5440</span>, <time datetime="2009-03" class="refDate">March 2009</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5440">https://www.rfc-editor.org/rfc/rfc5440</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6241">[RFC6241]</dt>
+        <dd>
+<span class="refAuthor">Enns, R., Ed.</span>, <span class="refAuthor">Bjorklund, M., Ed.</span>, <span class="refAuthor">Schoenwaelder, J., Ed.</span>, and <span class="refAuthor">A. Bierman, Ed.</span>, <span class="refTitle">"Network Configuration Protocol (NETCONF)"</span>, <span class="seriesInfo">RFC 6241</span>, <span class="seriesInfo">DOI 10.17487/RFC6241</span>, <time datetime="2011-06" class="refDate">June 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6241">https://www.rfc-editor.org/rfc/rfc6241</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7011">[RFC7011]</dt>
+        <dd>
+<span class="refAuthor">Claise, B., Ed.</span>, <span class="refAuthor">Trammell, B., Ed.</span>, and <span class="refAuthor">P. Aitken</span>, <span class="refTitle">"Specification of the IP Flow Information Export (IPFIX) Protocol for the Exchange of Flow Information"</span>, <span class="seriesInfo">STD 77</span>, <span class="seriesInfo">RFC 7011</span>, <span class="seriesInfo">DOI 10.17487/RFC7011</span>, <time datetime="2013-09" class="refDate">September 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7011">https://www.rfc-editor.org/rfc/rfc7011</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7471">[RFC7471]</dt>
+        <dd>
+<span class="refAuthor">Giacalone, S.</span>, <span class="refAuthor">Ward, D.</span>, <span class="refAuthor">Drake, J.</span>, <span class="refAuthor">Atlas, A.</span>, and <span class="refAuthor">S. Previdi</span>, <span class="refTitle">"OSPF Traffic Engineering (TE) Metric Extensions"</span>, <span class="seriesInfo">RFC 7471</span>, <span class="seriesInfo">DOI 10.17487/RFC7471</span>, <time datetime="2015-03" class="refDate">March 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7471">https://www.rfc-editor.org/rfc/rfc7471</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8040">[RFC8040]</dt>
+        <dd>
+<span class="refAuthor">Bierman, A.</span>, <span class="refAuthor">Bjorklund, M.</span>, and <span class="refAuthor">K. Watsen</span>, <span class="refTitle">"RESTCONF Protocol"</span>, <span class="seriesInfo">RFC 8040</span>, <span class="seriesInfo">DOI 10.17487/RFC8040</span>, <time datetime="2017-01" class="refDate">January 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8040">https://www.rfc-editor.org/rfc/rfc8040</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8570">[RFC8570]</dt>
+        <dd>
+<span class="refAuthor">Ginsberg, L., Ed.</span>, <span class="refAuthor">Previdi, S., Ed.</span>, <span class="refAuthor">Giacalone, S.</span>, <span class="refAuthor">Ward, D.</span>, <span class="refAuthor">Drake, J.</span>, and <span class="refAuthor">Q. Wu</span>, <span class="refTitle">"IS-IS Traffic Engineering (TE) Metric Extensions"</span>, <span class="seriesInfo">RFC 8570</span>, <span class="seriesInfo">DOI 10.17487/RFC8570</span>, <time datetime="2019-03" class="refDate">March 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8570">https://www.rfc-editor.org/rfc/rfc8570</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8571">[RFC8571]</dt>
+        <dd>
+<span class="refAuthor">Ginsberg, L., Ed.</span>, <span class="refAuthor">Previdi, S.</span>, <span class="refAuthor">Wu, Q.</span>, <span class="refAuthor">Tantsura, J.</span>, and <span class="refAuthor">C. Filsfils</span>, <span class="refTitle">"BGP - Link State (BGP-LS) Advertisement of IGP Traffic Engineering Performance Metric Extensions"</span>, <span class="seriesInfo">RFC 8571</span>, <span class="seriesInfo">DOI 10.17487/RFC8571</span>, <time datetime="2019-03" class="refDate">March 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8571">https://www.rfc-editor.org/rfc/rfc8571</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8639">[RFC8639]</dt>
+        <dd>
+<span class="refAuthor">Voit, E.</span>, <span class="refAuthor">Clemm, A.</span>, <span class="refAuthor">Gonzalez Prieto, A.</span>, <span class="refAuthor">Nilsen-Nygaard, E.</span>, and <span class="refAuthor">A. Tripathy</span>, <span class="refTitle">"Subscription to YANG Notifications"</span>, <span class="seriesInfo">RFC 8639</span>, <span class="seriesInfo">DOI 10.17487/RFC8639</span>, <time datetime="2019-09" class="refDate">September 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8639">https://www.rfc-editor.org/rfc/rfc8639</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9730">[RFC9730]</dt>
+      <dd>
+<span class="refAuthor">Zheng, H.</span>, <span class="refAuthor">Lin, Y.</span>, <span class="refAuthor">Zhao, Y.</span>, <span class="refAuthor">Xu, Y.</span>, and <span class="refAuthor">D. Beller</span>, <span class="refTitle">"Interworking of GMPLS Control and Centralized Controller Systems"</span>, <span class="seriesInfo">RFC 9730</span>, <span class="seriesInfo">DOI 10.17487/RFC9730</span>, <time datetime="2025-03" class="refDate">March 2025</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9730">https://www.rfc-editor.org/rfc/rfc9730</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+</section>
+</div>
+<div id="contributors">
+<section id="appendix-A">
+      <h2 id="name-contributors">
+<a href="#name-contributors" class="section-name selfRef">Contributors</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Minxue Wang</span></div>
+<div dir="auto" class="left"><span class="org">China Mobile</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:wangminxue@chinamobile.com" class="email">wangminxue@chinamobile.com</a>
+</div>
+</address>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-B">
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Yang Zhao</span></div>
+<div dir="auto" class="left"><span class="org">China Mobile</span></div>
+<div dir="auto" class="left"><span class="country-name">China</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:zhaoyangyjy@chinamobile.com" class="email">zhaoyangyjy@chinamobile.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">LiuYan Han</span></div>
+<div dir="auto" class="left"><span class="org">China Mobile</span></div>
+<div dir="auto" class="left"><span class="country-name">China</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:hanliuyan@chinamobile.com" class="email">hanliuyan@chinamobile.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Xiao Li</span></div>
+<div dir="auto" class="left"><span class="org">Huawei</span></div>
+<div dir="auto" class="left"><span class="country-name">China</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:lixiao33@huawei.com" class="email">lixiao33@huawei.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Haomian Zheng</span></div>
+<div dir="auto" class="left"><span class="org">Huawei</span></div>
+<div dir="auto" class="left"><span class="country-name">China</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:zhenghaomian@huawei.com" class="email">zhenghaomian@huawei.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Daniel King</span></div>
+<div dir="auto" class="left"><span class="org">Old Dog Consulting</span></div>
+<div dir="auto" class="left"><span class="country-name">United Kingdom</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:daniel@olddog.co.uk" class="email">daniel@olddog.co.uk</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>
