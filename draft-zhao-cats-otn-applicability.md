@@ -19,7 +19,8 @@
 # Change the file extension to match the format (.xml for XML, etc...)
 #
 ###
-title: "Framework and Applicability of Computation-aware Traffic Steering (CATS) in Optical Transport Networks (OTN)"
+title: >
+  Framework and Applicability of Computation-aware Traffic Steering (CATS) in Optical Transport Networks (OTN)
 abbrev: "OTN for CATS"
 category: info
 
