@@ -595,13 +595,18 @@ loop, effectively minimizing the external attack surface. Therefore, security is
 
 CATS-aware OTN edge nodes serve as the ingress points for computing traffic entering the network. In the absence of device access authentication, unauthorized devices could access the network, acting as attack vectors for traffic injection, eavesdropping, or lateral movement.
 Therefore, edge nodes MUST support access control:
+
 * Identity authentication MUST be performed before a device connects to the network to prevent the access of illegal or rogue devices. Only successfully authenticated devices are permitted to join the network and carry computing traffic.
+
 * Access MUST be denied for illegal devices, and such access attempt events MUST be recorded in audit logs.
 
 Network awareness state notifications (e.g., device status, link metrics) and policy notifications (e.g., routing policies, traffic steering rules) directly affect the forwarding paths of computing traffic. An attacker could leverage forged or tampered notification messages to publish false status information or malicious policies, performing malicious traffic steering or traffic hijacking. This may result in computing traffic being redirected to attacker-controlled nodes or discarded.
 Sensitive communications require message origin authentication and message integrity protection:
+
 * Network awareness state and policy notifications MUST be protected for integrity (e.g., using Message Authentication Codes) to detect any tampering during transmission.
+
 * The source of the notifications MUST be authenticated to ensure that only authorized entities (e.g., legitimate C-NMAs or C-PSes) can send notifications.
+
 * The receiver MUST verify the source and message integrity before executing any announced states or policies. If verification fails, a security alarm MUST be triggered, and the notification message MUST be discarded.
 
 
